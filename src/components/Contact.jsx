@@ -1,121 +1,101 @@
-import React, { useState } from "react";
+import React from "react";
+import {
+  Mail,
+  Phone,
+  Clock,
+  Facebook,
+  Instagram,
+  Twitter,
+} from "lucide-react";
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const validateEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    const { name, email, subject, message } = formData;
-
-    if (!name || !email || !subject || !message) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      // Replace this with your API call
-      await new Promise((res) => setTimeout(res, 1500));
-
-      setSuccess("Message sent successfully!");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch {
-      setError("Failed to send message. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function Contact() {
+  const openEmail = () => window.open("mailto:support@expenso.app", "_blank");
+  const callSupport = () => window.open("tel:+919999999999", "_blank");
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="w-full max-w-xl bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-3xl font-semibold text-gray-900 mb-6 text-center">
-          Contact Us
-        </h1>
+    <div className="min-h-screen bg-white px-6 pt-10">
+      {/* Header */}
+      <h1 className="text-3xl font-bold text-gray-800 mb-2">Contact Us</h1>
+      <p className="text-gray-500 text-base mb-6">
+        We’re here to help. Reach out via email or phone.
+      </p>
 
-        {error && (
-          <div className="mb-4 text-red-700 bg-red-100 p-3 rounded">{error}</div>
-        )}
-        {success && (
-          <div className="mb-4 text-green-700 bg-green-100 p-3 rounded">
-            {success}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            required
-          />
-          <input
-            type="text"
-            name="subject"
-            placeholder="Subject"
-            value={formData.subject}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            required
-          />
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            value={formData.message}
-            onChange={handleChange}
-            rows={5}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400 resize-none"
-            required
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-cyan-600 text-white font-semibold py-3 rounded-md shadow-md
-              hover:bg-cyan-700 transition duration-300 disabled:opacity-50"
+      {/* Contact Info */}
+      <div className="mb-6 space-y-4">
+        <div className="flex items-center">
+          <Mail className="w-6 h-6 text-blue-600" />
+          <a
+            href="mailto:support@expenso.app"
+            className="ml-3 text-blue-600 text-base underline"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            {loading ? "Sending..." : "Send Message"}
-          </button>
-        </form>
+            support@expenso.app
+          </a>
+        </div>
+        <div className="flex items-center">
+          <Phone className="w-6 h-6 text-green-600" />
+          <a
+            href="tel:+919999999999"
+            className="ml-3 text-green-600 text-base underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            +91 99999 99999
+          </a>
+        </div>
+        <div className="flex items-center">
+          <Clock className="w-6 h-6 text-yellow-500" />
+          <span className="ml-3 text-gray-700 text-base">
+            Mon–Fri, 9:00 AM – 6:00 PM
+          </span>
+        </div>
+      </div>
+
+      {/* Support Prompt */}
+      <h2 className="text-lg font-semibold text-gray-800 mb-2">
+        Got a suggestion or issue?
+      </h2>
+      <p className="text-gray-600 mb-4">
+        We're always improving. Let us know if you find bugs or have ideas!
+      </p>
+      <button
+        className="bg-blue-600 py-3 rounded-xl w-full text-white font-bold text-base mb-8"
+        onClick={openEmail}
+      >
+        Send Feedback
+      </button>
+
+      {/* Social Icons */}
+      <div className="border-t border-gray-200 pt-6">
+        <p className="text-gray-500 text-center mb-3">Connect with us</p>
+        <div className="flex justify-center gap-6">
+          <a
+            href="https://facebook.com/expensoapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <Facebook className="w-7 h-7 text-[#1877F2] hover:scale-110 transition" />
+          </a>
+          <a
+            href="https://instagram.com/expensoapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <Instagram className="w-7 h-7 text-[#E4405F] hover:scale-110 transition" />
+          </a>
+          <a
+            href="https://twitter.com/expensoapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Twitter"
+          >
+            <Twitter className="w-7 h-7 text-[#1DA1F2] hover:scale-110 transition" />
+          </a>
+        </div>
       </div>
     </div>
   );
-};
-
-export default Contact;
+}

@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
           accessToken,
           user,
         });
-        console.log(accessToken,refreshToken,user)
+        // console.log(accessToken,refreshToken,user)
       }
       setLoading(false);
     } catch (err) {

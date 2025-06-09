@@ -1,81 +1,151 @@
 import React from "react";
-import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Wallet,
+} from "lucide-react";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
+  LineChart, Line, PieChart, Pie, Cell,
+} from "recharts";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28FD0"];
+const monthlyData = [
+  { month: "Jan", income: 4000, expense: 2500 },
+  { month: "Feb", income: 4200, expense: 3000 },
+  { month: "Mar", income: 3500, expense: 2800 },
+  { month: "Apr", income: 5000, expense: 3200 },
+  { month: "May", income: 4800, expense: 3300 },
+  { month: "Jun", income: 5200, expense: 3100 },
+];
 
-const ExpenseAnalysis = ({ expenses }) => {
-  // Calculate total expenses per category
-  const data = Object.entries(
-    expenses.reduce((acc, exp) => {
-      acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
-      return acc;
-    }, {})
-  ).map(([category, amount]) => ({ name: category, value: amount }));
+const categoryExpenseData = [
+  { name: "Food & Groceries", value: 4000, color: "#f87171" },
+  { name: "Rent", value: 2500, color: "#60a5fa" },
+  { name: "Utilities", value: 1500, color: "#34d399" },
+  { name: "Transportation", value: 1200, color: "#fbbf24" },
+  { name: "Entertainment", value: 800, color: "#a78bfa" },
+];
 
-  const total = data.reduce((sum, entry) => sum + entry.value, 0);
+const incomeData = monthlyData.map((item) => item.income);
+const expenseData = monthlyData.map((item) => item.expense);
+const balanceData = monthlyData.map((item) => item.income - item.expense);
+const totalIncome = incomeData.reduce((a, b) => a + b, 0);
+const totalExpense = expenseData.reduce((a, b) => a + b, 0);
+const totalBalance = totalIncome - totalExpense;
 
+export default function ExpenseAnalysis() {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Expense Analysis</h2>
+    <div className="min-h-screen bg-gray-100 p-4">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        Expense Analysis
+      </h1>
 
-      <div className="flex flex-col md:flex-row md:space-x-10">
-        {/* Pie Chart */}
-        <div className="md:w-1/2 h-64">
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={data}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                label={({ name, percent }) =>
-                  `${name}: ${(percent * 100).toFixed(0)}%`
-                }
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
-              <Legend verticalAlign="bottom" height={36} />
-            </PieChart>
-          </ResponsiveContainer>
+      {/* Summary Cards with Lucide Icons */}
+      <div className="flex gap-4 mb-6">
+        <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
+          <Wallet className="w-8 h-8 text-green-500" />
+          <div>
+            <div className="text-gray-500 text-xs font-semibold">Total Balance</div>
+            <div className="mt-2 text-lg font-bold text-green-600">
+              ₹{totalBalance.toLocaleString()}
+            </div>
+          </div>
         </div>
+        <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
+          <ArrowDownCircle className="w-8 h-8 text-blue-500" />
+          <div>
+            <div className="text-gray-500 text-xs font-semibold">Total Income</div>
+            <div className="mt-2 text-lg font-bold text-blue-600">
+              ₹{totalIncome.toLocaleString()}
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
+          <ArrowUpCircle className="w-8 h-8 text-red-500" />
+          <div>
+            <div className="text-gray-500 text-xs font-semibold">Total Expense</div>
+            <div className="mt-2 text-lg font-bold text-red-600">
+              ₹{totalExpense.toLocaleString()}
+            </div>
+          </div>
+        </div>
+      </div>
 
-        {/* Expense Table */}
-        <div className="md:w-1/2 mt-6 md:mt-0 overflow-auto">
-          <table className="w-full border-collapse border border-gray-200 text-gray-700">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 px-4 py-2 text-left">Category</th>
-                <th className="border border-gray-300 px-4 py-2 text-right">Amount ($)</th>
-                <th className="border border-gray-300 px-4 py-2 text-right">Percent (%)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map(({ name, value }, i) => (
-                <tr key={i} className="hover:bg-gray-100">
-                  <td className="border border-gray-300 px-4 py-2">{name}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">{value.toFixed(2)}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">
-                    {((value / total) * 100).toFixed(1)}
-                  </td>
-                </tr>
+      {/* Bar Chart */}
+      <div className="bg-white rounded-lg p-4 shadow mb-6">
+        <div className="text-lg font-semibold text-gray-900 mb-4">
+          Monthly Income vs Expense
+        </div>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={monthlyData}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="income" fill="#60a5fa" name="Income" />
+            <Bar dataKey="expense" fill="#f87171" name="Expense" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Line Chart */}
+      <div className="bg-white rounded-lg p-4 shadow mb-6">
+        <div className="text-lg font-semibold text-gray-900 mb-4">
+          Balance Trend
+        </div>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={monthlyData.map((item, i) => ({
+            ...item,
+            balance: balanceData[i],
+          }))}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="balance" stroke="#10b981" strokeWidth={2} name="Balance" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Pie Chart */}
+      <div className="bg-white rounded-lg p-4 shadow mb-6">
+        <div className="text-lg font-semibold text-gray-900 mb-4">
+          Expense by Category
+        </div>
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart>
+            <Pie
+              data={categoryExpenseData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              innerRadius={40}
+              label
+            >
+              {categoryExpenseData.map((entry, idx) => (
+                <Cell key={entry.name} fill={entry.color} />
               ))}
-              <tr className="font-bold bg-gray-100">
-                <td className="border border-gray-300 px-4 py-2">Total</td>
-                <td className="border border-gray-300 px-4 py-2 text-right">{total.toFixed(2)}</td>
-                <td className="border border-gray-300 px-4 py-2 text-right">100</td>
-              </tr>
-            </tbody>
-          </table>
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="mt-4">
+          {categoryExpenseData.map(({ name, color, value }) => (
+            <div key={name} className="flex items-center mb-2">
+              <span
+                className="w-4 h-4 rounded-sm mr-3 inline-block"
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-gray-700 text-sm">
+                {name}: ₹{value.toLocaleString()}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
-};
-
-export default ExpenseAnalysis;
+}

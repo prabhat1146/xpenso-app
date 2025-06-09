@@ -1,163 +1,244 @@
 import React, { useState } from "react";
+import {
+  ArrowDownCircle,
+  ArrowUpCircle,
+  ArrowLeftRight,
+  Wallet,
+  Plus,
+  Funnel,
+  ListFilter,
+  List,
+} from "lucide-react";
 
-const categories = [
-  "Food",
-  "Transport",
-  "Utilities",
-  "Entertainment",
-  "Health",
-  "Other",
+const transactionsData = [
+  { id: "1", title: "Groceries", amount: 500, category: "Food", date: "2025-06-01", type: "expense" },
+  { id: "2", title: "Salary", amount: 30000, category: "Income", date: "2025-06-01", type: "income" },
+  { id: "3", title: "Bank Transfer", amount: 2000, category: "Transfer", date: "2025-06-02", type: "transfer" },
+  { id: "4", title: "Movie", amount: 300, category: "Entertainment", date: "2025-06-03", type: "expense" },
+  { id: "5", title: "Freelance", amount: 8000, category: "Income", date: "2025-06-04", type: "income" },
+  { id: "6", title: "Rent", amount: 7000, category: "Housing", date: "2025-06-05", type: "expense" },
 ];
 
-const Expense = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [form, setForm] = useState({
-    category: "",
-    amount: "",
-    date: "",
+const categories = [
+  { name: "All", icon: List },
+  { name: "Food", icon: Funnel },
+  { name: "Income", icon: ArrowDownCircle },
+  { name: "Transfer", icon: ArrowLeftRight },
+  { name: "Entertainment", icon: ListFilter },
+  { name: "Housing", icon: Funnel },
+];
+
+const transactionTypes = [
+  { name: "All", icon: List },
+  { name: "income", icon: ArrowDownCircle },
+  { name: "expense", icon: ArrowUpCircle },
+  { name: "transfer", icon: ArrowLeftRight },
+];
+
+const dateFilters = [
+  { name: "All", icon: List },
+  { name: "Last 7 Days", icon: Funnel },
+  { name: "Last 30 Days", icon: Funnel },
+];
+
+export default function TransactionsTab({ onAddTransaction }) {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedType, setSelectedType] = useState("All");
+  const [selectedDateFilter, setSelectedDateFilter] = useState("All");
+  const [searchText, setSearchText] = useState("");
+
+  // Filtering logic
+  const filteredTransactions = transactionsData.filter((tx) => {
+    const categoryMatch = selectedCategory === "All" || tx.category === selectedCategory;
+    const typeMatch = selectedType === "All" || tx.type === selectedType;
+    const searchMatch =
+      tx.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      (tx.note && tx.note.toLowerCase().includes(searchText.toLowerCase()));
+
+    let dateMatch = true;
+    if (selectedDateFilter === "Last 7 Days") {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      dateMatch = new Date(tx.date) >= sevenDaysAgo;
+    } else if (selectedDateFilter === "Last 30 Days") {
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      dateMatch = new Date(tx.date) >= thirtyDaysAgo;
+    }
+
+    return categoryMatch && typeMatch && dateMatch && searchMatch;
   });
-  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleAddExpense = (e) => {
-    e.preventDefault();
-    setError("");
-
-    // Basic validation
-    if (!form.category) {
-      setError("Please select a category.");
-      return;
-    }
-    if (!form.amount || isNaN(form.amount) || Number(form.amount) <= 0) {
-      setError("Please enter a valid amount.");
-      return;
-    }
-    if (!form.date) {
-      setError("Please select a date.");
-      return;
-    }
-
-    const newExpense = {
-      id: Date.now(),
-      category: form.category,
-      amount: parseFloat(form.amount),
-      date: form.date,
-    };
-
-    setExpenses([newExpense, ...expenses]);
-    setForm({ category: "", amount: "", date: "" });
-  };
-
-  const totalExpense = expenses.reduce((acc, e) => acc + e.amount, 0);
+  // Summaries
+  const totalIncome = transactionsData
+    .filter((t) => t.type === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+  const totalExpense = transactionsData
+    .filter((t) => t.type === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+  const totalTransfer = transactionsData
+    .filter((t) => t.type === "transfer")
+    .reduce((sum, t) => sum + t.amount, 0);
+  const totalBalance = totalIncome - totalExpense;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-md shadow-md">
-      <h1 className="text-3xl font-semibold mb-6 text-gray-800">Manage Expenses</h1>
+    <div className="min-h-screen bg-gray-50 p-4 pb-24 relative">
+      {/* Summary Cards */}
+      <div className="mb-6">
+        <div className="flex gap-4 mb-3">
+          <div className="flex-1 bg-white p-4 rounded-xl shadow flex items-center gap-3">
+            <Wallet className="w-8 h-8 text-green-500" />
+            <div>
+              <div className="text-sm text-gray-500">Total Balance</div>
+              <div className="mt-1 text-xl font-semibold text-green-600">
+                ₹{totalBalance.toLocaleString()}
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 bg-white p-4 rounded-xl shadow flex items-center gap-3">
+            <ArrowDownCircle className="w-8 h-8 text-blue-500" />
+            <div>
+              <div className="text-sm text-gray-500">Total Income</div>
+              <div className="mt-1 text-xl font-semibold text-blue-600">
+                ₹{totalIncome.toLocaleString()}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <div className="flex-1 bg-white p-4 rounded-xl shadow flex items-center gap-3">
+            <ArrowUpCircle className="w-8 h-8 text-red-500" />
+            <div>
+              <div className="text-sm text-gray-500">Total Expense</div>
+              <div className="mt-1 text-xl font-semibold text-red-600">
+                ₹{totalExpense.toLocaleString()}
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 bg-white p-4 rounded-xl shadow flex items-center gap-3">
+            <ArrowLeftRight className="w-8 h-8 text-orange-500" />
+            <div>
+              <div className="text-sm text-gray-500">Total Transfer</div>
+              <div className="mt-1 text-xl font-semibold text-orange-600">
+                ₹{totalTransfer.toLocaleString()}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>
-      )}
+      {/* Filters */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search Transactions"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="bg-white p-3 rounded mb-3 shadow w-full"
+        />
 
-      <form onSubmit={handleAddExpense} className="mb-8 space-y-4">
-        <div>
-          <label htmlFor="category" className="block font-medium text-gray-700 mb-1">
-            Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            required
-          >
-            <option value="" disabled>
-              Select Category
-            </option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+        <div className="mb-2 font-semibold text-md flex items-center gap-2">
+          <ListFilter className="w-5 h-5 text-blue-500" />
+          Filter by Type
+        </div>
+        <div className="flex gap-2 mb-4">
+          {transactionTypes.map(({ name, icon: Icon }) => (
+            <button
+              key={name}
+              onClick={() => setSelectedType(name)}
+              className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
+                selectedType === name ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {name.charAt(0).toUpperCase() + name.slice(1)}
+            </button>
+          ))}
         </div>
 
-        <div>
-          <label htmlFor="amount" className="block font-medium text-gray-700 mb-1">
-            Amount ($)
-          </label>
-          <input
-            type="number"
-            step="0.01"
-            min="0"
-            id="amount"
-            name="amount"
-            value={form.amount}
-            onChange={handleChange}
-            placeholder="Enter amount"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            required
-          />
+        <div className="mb-2 font-semibold text-md flex items-center gap-2">
+          <Funnel className="w-5 h-5 text-blue-500" />
+          Filter by Category
+        </div>
+        <div className="flex gap-2 mb-4 flex-wrap">
+          {categories.map(({ name, icon: Icon }) => (
+            <button
+              key={name}
+              onClick={() => setSelectedCategory(name)}
+              className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
+                selectedCategory === name ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {name}
+            </button>
+          ))}
         </div>
 
-        <div>
-          <label htmlFor="date" className="block font-medium text-gray-700 mb-1">
-            Date
-          </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-            required
-          />
+        <div className="mb-2 font-semibold text-md flex items-center gap-2">
+          <List className="w-5 h-5 text-blue-500" />
+          Filter by Date
         </div>
+        <div className="flex gap-2 mb-4">
+          {dateFilters.map(({ name, icon: Icon }) => (
+            <button
+              key={name}
+              onClick={() => setSelectedDateFilter(name)}
+              className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
+                selectedDateFilter === name ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {name}
+            </button>
+          ))}
+        </div>
+      </div>
 
-        <button
-          type="submit"
-          className="w-full bg-cyan-500 text-white font-semibold py-3 rounded-md hover:bg-cyan-600 transition"
-        >
-          Add Expense
-        </button>
-      </form>
-
+      {/* Transactions List */}
       <div>
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Expense List</h2>
-        {expenses.length === 0 ? (
-          <p className="text-gray-500">No expenses added yet.</p>
-        ) : (
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-cyan-100 text-gray-700">
-                <th className="border border-gray-300 px-4 py-2 text-left">Category</th>
-                <th className="border border-gray-300 px-4 py-2 text-right">Amount ($)</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map(({ id, category, amount, date }) => (
-                <tr key={id} className="hover:bg-cyan-50">
-                  <td className="border border-gray-300 px-4 py-2">{category}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-right">{amount.toFixed(2)}</td>
-                  <td className="border border-gray-300 px-4 py-2">{date}</td>
-                </tr>
-              ))}
-              <tr className="font-bold bg-cyan-100">
-                <td className="border border-gray-300 px-4 py-2">Total</td>
-                <td className="border border-gray-300 px-4 py-2 text-right">{totalExpense.toFixed(2)}</td>
-                <td className="border border-gray-300 px-4 py-2"></td>
-              </tr>
-            </tbody>
-          </table>
+        {filteredTransactions.map((item) => (
+          <div
+            key={item.id}
+            className="flex justify-between bg-white rounded-lg p-4 mb-3 shadow"
+          >
+            <div>
+              <div className="font-semibold text-gray-900">{item.title}</div>
+              <div className="text-sm text-gray-500">{item.category}</div>
+            </div>
+            <div className="text-right">
+              <div
+                className={`text-lg font-semibold ${
+                  item.type === "income"
+                    ? "text-green-600"
+                    : item.type === "expense"
+                    ? "text-red-600"
+                    : "text-orange-600"
+                } flex items-center gap-1`}
+              >
+                {item.type === "income" && <ArrowDownCircle className="w-5 h-5" />}
+                {item.type === "expense" && <ArrowUpCircle className="w-5 h-5" />}
+                {item.type === "transfer" && <ArrowLeftRight className="w-5 h-5" />}
+                ₹{item.amount.toLocaleString()}
+              </div>
+              <div className="text-xs text-gray-400">{item.date}</div>
+            </div>
+          </div>
+        ))}
+        {filteredTransactions.length === 0 && (
+          <div className="text-center text-gray-400 py-8">No transactions found.</div>
         )}
       </div>
+
+      {/* Add Transaction Button */}
+      <button
+        onClick={onAddTransaction}
+        className="fixed bottom-8 right-8 bg-blue-600 rounded-full p-5 shadow-lg text-white"
+        style={{ zIndex: 10 }}
+        aria-label="Add Transaction"
+      >
+        <Plus className="w-8 h-8" />
+      </button>
     </div>
   );
-};
-
-export default Expense;
+}

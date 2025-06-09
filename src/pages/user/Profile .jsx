@@ -1,8 +1,13 @@
 import React from "react";
+import ErrorPage from "../../layout/Error";
 
 const Profile = ({ user }) => {
   // `user` prop is an object with user data, e.g.:
   // { avatar, firstName, lastName, email, mobile, role, joinedAt }
+
+  if(!user){
+return <> <ErrorPage/></>
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -11,16 +16,16 @@ const Profile = ({ user }) => {
           {/* Avatar */}
           <img
             className="h-24 w-24 rounded-full object-cover border-2 border-cyan-500"
-            src={user.avatar || "https://i.pravatar.cc/150?img=10"}
-            alt={`${user.firstName} ${user.lastName}`}
+            src={user?.avatar || "https://i.pravatar.cc/150?img=10"}
+            alt={`${user?.firstName} ${user?.lastName}`}
           />
           {/* User Basic Info */}
           <div>
             <h1 className="text-3xl font-semibold text-gray-900">
-              {user.firstName} {user.lastName}
+              {user?.firstName} {user?.lastName}
             </h1>
-            <p className="text-cyan-600 font-medium">{user.role || "User"}</p>
-            <p className="text-gray-600 mt-1">Member since: {new Date(user.joinedAt).toLocaleDateString()}</p>
+            <p className="text-cyan-600 font-medium">{user?.role || "User"}</p>
+            <p className="text-gray-600 mt-1">Member since: {new Date(user?.joinedAt).toLocaleDateString()}</p>
           </div>
         </div>
 

@@ -1,49 +1,105 @@
 import React, { useState } from "react";
+import { Star, StarOff } from "lucide-react";
 
-const Star = ({ filled, onClick, onMouseEnter, onMouseLeave }) => (
-  <svg
-    onClick={onClick}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    className={`w-8 h-8 cursor-pointer transition-colors duration-200 ${
-      filled ? "text-yellow-400" : "text-gray-300"
-    }`}
-    fill="currentColor"
-    viewBox="0 0 20 20"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.04 9.393c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.966z" />
-  </svg>
-);
-
-const Rating = ({ maxRating = 5, onChange }) => {
+export default function Rating() {
   const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleClick = (value) => {
-    setRating(value);
-    if (onChange) onChange(value);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (rating === 0) {
+      setError("Please provide a star rating.");
+      return;
+    }
+    setError("");
+    setSubmitted(true);
+    // TODO: Send to backend if needed
   };
 
   return (
-    <div className="flex items-center space-x-1">
-      {[...Array(maxRating)].map((_, i) => {
-        const starValue = i + 1;
-        return (
-          <Star
-            key={i}
-            filled={starValue <= (hoverRating || rating)}
-            onClick={() => handleClick(starValue)}
-            onMouseEnter={() => setHoverRating(starValue)}
-            onMouseLeave={() => setHoverRating(0)}
-          />
-        );
-      })}
-      <span className="ml-2 text-gray-700 font-semibold">
-        {rating > 0 ? `${rating} / ${maxRating}` : "No rating"}
-      </span>
+    <div className="min-h-screen bg-white px-6 pt-12 flex flex-col items-center">
+      {/* App Title or Logo */}
+      <div className="mb-6 text-center">
+        <div className="text-3xl font-extrabold text-blue-700">Expenso</div>
+        <div className="text-lg text-gray-500 mt-1">Your Smart Expense Manager</div>
+      </div>
+
+      {/* Prompt */}
+      <div className="text-xl font-bold text-gray-800 mb-3 text-center">
+        How was your experience?
+      </div>
+      <div className="text-gray-600 mb-8 text-center">
+        We'd love your feedback to improve the app and provide a better experience.
+      </div>
+
+      {/* Star Rating */}
+      <div className="flex justify-center gap-3 mb-8">
+        {[1, 2, 3, 4, 5].map((val) => (
+          <button
+            key={val}
+            onClick={() => setRating(val)}
+            type="button"
+            aria-label={`Rate ${val} star${val > 1 ? "s" : ""}`}
+            className="focus:outline-none"
+          >
+            {val <= rating ? (
+              <Star className="w-10 h-10 text-yellow-400 fill-yellow-400" />
+            ) : (
+              <Star className="w-10 h-10 text-gray-300" />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Feedback Input */}
+      <form
+        className="w-full max-w-xl flex flex-col items-stretch"
+        onSubmit={handleSubmit}
+      >
+        <label className="text-base font-semibold text-gray-700 mb-2" htmlFor="feedback">
+          Your Comments
+        </label>
+        <textarea
+          id="feedback"
+          className="bg-gray-100 rounded-xl p-4 text-base h-32 text-gray-800 mb-2 resize-none"
+          placeholder="Let us know what you liked or what can be improved..."
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+        />
+        {error && (
+          <div className="text-red-600 mb-2 text-center">{error}</div>
+        )}
+        <button
+          className="bg-blue-600 rounded-xl p-4 mt-2 text-white text-lg font-bold"
+          type="submit"
+        >
+          Submit Feedback
+        </button>
+      </form>
+
+      {/* Confirmation */}
+      {submitted && (
+        <div className="mt-6 text-green-600 text-center text-base">
+          🎉 Thanks for your feedback!
+        </div>
+      )}
+
+      {/* Contact Info */}
+      <div className="mt-12 border-t border-gray-200 pt-6 text-center w-full">
+        <span className="text-gray-500 text-sm">
+          Need help? Contact us at{" "}
+          <a
+            href="mailto:support@expenso.app"
+            className="text-blue-600 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            support@expenso.app
+          </a>
+        </span>
+      </div>
     </div>
   );
-};
-
-export default Rating;
+}

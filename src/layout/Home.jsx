@@ -14,6 +14,7 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
+import Alert from "../components/Alert";
 
 const expenseData = [
   { month: "Jan", expense: 1200 },
@@ -145,6 +146,7 @@ const Home = () => {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+       {/* <Alert message={"message"}/> */}
     </div>
   );
 };

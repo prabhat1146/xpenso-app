@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import apiClientJson from "../utils/api/apiClientJson";
 import { useAuth } from "../context/AuthContext";
 import FullScreenLoader from "./FullScreenLoader";
+import Alert from "./Alert";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const Login = () => {
         password: formData.password,
       };
 
-      const { data } = await apiClientJson.post("/api/v1/user/login", payload);
+      const { data } = await apiClientJson.post("/api/v1/auth/login", payload);
 
       //   localStorage.setItem("accessToken", data?.data?.accessToken);
       //   localStorage.setItem("refreshToken", data?.data?.refreshToken);
@@ -63,6 +64,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-50 to-cyan-100 px-4">
         {loading && <FullScreenLoader/>}
+       
       <div
         className={`max-w-md w-full bg-slate-800 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
           ${
@@ -135,6 +137,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+       {/* <Alert/> */}
     </div>
   );
 };
