@@ -20,13 +20,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const links = [
     { name: "Home", icon: <Home size={18} />, to: "/" },
-    { name: "Expense", icon: <Wallet size={18} />, to: "/expense" },
-    { name: "Add New", icon: <PlusCircle size={18} />, to: "/add" },
-    { name: "Analysis", icon: <BarChart size={18} />, to: "/analysis" },
-    { name: "Profile", icon: <User size={18} />, to: "/profile" },
-    { name: "Settings", icon: <Settings size={18} />, to: "/settings" },
-    { name: "Contact", icon: <Phone size={18} />, to: "/contact" },
-    { name: "Rating", icon: <Star size={18} />, to: "/rating" },
+    { name: "Expense", icon: <Wallet size={18} />, to: "/pages/user/in/expense" },
+    { name: "Add New", icon: <PlusCircle size={18} />, to: "/pages/user/in/add-new" },
+    { name: "Analysis", icon: <BarChart size={18} />, to: "/pages/user/in/expense-analysis" },
+    { name: "Profile", icon: <User size={18} />, to: "/pages/user/in/profile" },
+    { name: "Settings", icon: <Settings size={18} />, to: "/pages/user/in/settings" },
+    { name: "Contact", icon: <Phone size={18} />, to: "/pages/contact-us" },
+    { name: "Rating", icon: <Star size={18} />, to: "/pages/user/in/rating" },
   ];
 
   return (
@@ -67,7 +67,7 @@ const Navbar = ({ toggleSidebar, isLoggedIn, onLogin, onLogout }) => (
       <div>
         <img className="w-12 h-12 rounded-full" src="/assets/logo/XPENSO.png" alt="" />
       </div>
-      <span className="text-xl font-bold">Expenso</span>
+      <span className="text-xl font-bold">Xpenso</span>
     </div>
     <div>
       {isLoggedIn ? (
