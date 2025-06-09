@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiClientJson from "../utils/api/apiClientJson";
 import { Link } from "react-router-dom";
+import FullScreenLoader from "./FullScreenLoader";
 
 const countryCodes = [
   { code: "+1", label: "USA" },
@@ -11,6 +12,7 @@ const countryCodes = [
 ];
 
 const Signup = () => {
+    const [loading,setLoading]=useState(false);
   const [formData, setFormData] = useState({
     countryCode: "+91", // default country code
     mobile: "",
@@ -39,6 +41,7 @@ const Signup = () => {
     setSuccess("");
 
     try {
+        setLoading(true);
       // Merge country code and mobile, remove leading zero if any
       const normalizedMobile =
         formData.mobile.startsWith("0")
@@ -68,10 +71,13 @@ const Signup = () => {
     } catch (err) {
       setError(err.message || "Something went wrong.");
     }
+
+    setLoading(false)
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-50 to-cyan-100 px-4">
+        {loading && <FullScreenLoader/>}
       <div
         className={`max-w-md w-full bg-slate-800 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
           ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import apiClientJson from "../utils/api/apiClientJson";
 import { useAuth } from "../context/AuthContext";
+import FullScreenLoader from "./FullScreenLoader";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const [formData, setFormData] = useState({
     countryCode: "+91",
@@ -28,6 +30,7 @@ const Login = () => {
     setError("");
 
     try {
+      setLoading(true);
       const fullMobile = `${formData.countryCode}${formData.mobile}`;
 
       const payload = {
@@ -47,16 +50,19 @@ const Login = () => {
         data?.data?.user
       );
       //   <Navigate to={"/pages/user/in/dashboard"} replace/>
+      setLoading(false);
       navigate("/pages/user/in/dashboard", { replace: true });
     } catch (err) {
       const errorMsg =
         err?.response?.data?.message || err.message || "Login failed";
       setError(errorMsg);
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-50 to-cyan-100 px-4">
+        {loading && <FullScreenLoader/>}
       <div
         className={`max-w-md w-full bg-slate-800 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
           ${
