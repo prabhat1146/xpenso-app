@@ -221,7 +221,7 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
           <ListFilter className="w-5 h-5 text-blue-500" />
           Filter by Type
         </div>
-        <div className="w-full flex gap-2 mb-4 overflow-x-auto">
+        <div className="w-full flex gap-2 mb-4 overflow-x-auto scrollbar-hide">
           {transactionTypes.map(({ name, icon: Icon }) => (
             <button
               key={name}
@@ -242,7 +242,7 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
           <Funnel className="w-5 h-5 text-blue-500" />
           Filter by payment mode
         </div>
-        <div className="w-full flex gap-2 mb-4 flex-wrap overflow-x-auto">
+        <div className="w-full flex gap-2 mb-4 flex-wrap overflow-x-auto scrollbar-hide">
           <button
               key={"all"}
               onClick={() => setSelectedMode('All')}
@@ -276,7 +276,7 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
           Filter by Category
         </div>
 
-        <div className="w-full overflow-x-auto flex gap-2 mb-4 flex-wrap">
+        <div className="w-full scrollbar-hide overflow-x-auto scrollbar-hide flex gap-2 mb-4 flex-wrap">
           <button
               key={"All"}
               onClick={() => setSelectedCategory("All")}
@@ -309,7 +309,7 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
           <List className="w-5 h-5 text-blue-500" />
           Filter by Date
         </div>
-        <div className="w-full overflow-x-auto flex gap-2 mb-4">
+        <div className="w-full overflow-x-auto scrollbar-hide flex gap-2 mb-4">
           {dateFilters?.map(({ name, icon: Icon }) => (
             <button
               key={name}
