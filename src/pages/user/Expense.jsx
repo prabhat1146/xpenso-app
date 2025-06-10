@@ -13,6 +13,7 @@ import {
 import useGetModes from "../../hooks/useGetModes";
 import UseGetCategories from "../../hooks/useGetCategories";
 import UseGetTransactions from "../../hooks/useGetTransactions";
+import FullScreenLoader from "../../components/FullScreenLoader";
 
 // const transactionsData = [
 //   {
@@ -105,7 +106,7 @@ export default function TransactionsTab({ onAddTransaction }) {
 
 
    if(!paymentModes || !categories || !transactions){
-    return null;
+    return <FullScreenLoader/>
   }
 
 
@@ -164,6 +165,7 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-24 relative">
       {/* Summary Cards */}
+      
       <div className="mb-6">
         <div className="flex gap-4 mb-3">
           <div className="flex-1 bg-white p-4 rounded-xl shadow flex items-center gap-3">
