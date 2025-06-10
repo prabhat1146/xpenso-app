@@ -15,6 +15,11 @@ import Profile from "./pages/user/Profile ";
 import Settings from "./pages/user/Setting";
 import Rating from "./components/Rating";
 import Contact from "./components/Contact";
+import AboutUs from "./pages/legal/AboutUs";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy ";
+import TermsAndConditions from "./pages/legal/TermsAndConditions";
+import RefundPolicy from "./pages/legal/RefundPolicy";
+import Disclaimer from "./pages/legal/Disclaimer";
 
 function App() {
   return (
@@ -38,7 +43,14 @@ function App() {
             <Route path="sign-up" element={<Signup />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
           </Route>
-          <Route path="contact-us" element={<Contact/>}/>
+          <Route path="legal" element={<Outlet />}>
+            <Route path="about-us" element={<AboutUs />} />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="refund-policy" element={<RefundPolicy />} />
+            <Route path="disclaimer" element={<Disclaimer />} />
+          </Route>
+          <Route path="contact-us" element={<Contact />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Route>

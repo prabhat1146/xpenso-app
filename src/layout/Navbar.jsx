@@ -12,6 +12,7 @@ import {
   Star,
   LogIn,
   LogOut,
+  LayoutDashboardIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -20,6 +21,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const links = [
     { name: "Home", icon: <Home size={18} />, to: "/" },
+    { name: "Dashboard", icon: <LayoutDashboardIcon size={18} />, to: "/pages/user/in/dashboard" },
     { name: "Expense", icon: <Wallet size={18} />, to: "/pages/user/in/expense" },
     { name: "Add New", icon: <PlusCircle size={18} />, to: "/pages/user/in/add-new" },
     { name: "Analysis", icon: <BarChart size={18} />, to: "/pages/user/in/expense-analysis" },
