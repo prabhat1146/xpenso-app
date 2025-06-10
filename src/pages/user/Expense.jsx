@@ -93,7 +93,6 @@ export default function TransactionsTab({ onAddTransaction }) {
   const { categories } = UseGetCategories();
   const { transactions } = UseGetTransactions();
 
-
   const [selectedType, setSelectedType] = useState("All");
   const [selectedMode, setSelectedMode] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -104,20 +103,24 @@ export default function TransactionsTab({ onAddTransaction }) {
     console.log(transactions);
   }, [transactions]);
 
-
-   if(!paymentModes || !categories || !transactions){
-    return <FullScreenLoader/>
+  if (
+    !paymentModes ||
+    paymentModes?.length === 0 ||
+    !categories ||
+    categories.length === 0 ||
+    !transactions ||
+    transactions.length === 0
+  ) {
+    return <FullScreenLoader />;
   }
-
-
 
   // Filtering logic
   const filteredTransactions = transactions?.filter((tx) => {
-    const typeMatch = selectedType === "All" || tx?.category.type === selectedType;
+    const typeMatch =
+      selectedType === "All" || tx?.category.type === selectedType;
     const categoryMatch =
       selectedCategory === "All" || tx?.category.value === selectedCategory;
-    const modeMatch =
-      selectedMode === "All" || tx?.mode.value === selectedMode;
+    const modeMatch = selectedMode === "All" || tx?.mode.value === selectedMode;
     // const searchMatch =
     //   tx.title.toLowerCase().includes(searchText.toLowerCase()) ||
     //   (tx.note && tx.note.toLowerCase().includes(searchText.toLowerCase()));
@@ -133,26 +136,24 @@ export default function TransactionsTab({ onAddTransaction }) {
       dateMatch = new Date(tx.date) >= thirtyDaysAgo;
     }
 
-    return typeMatch &&  categoryMatch  && modeMatch && dateMatch ;
+    return typeMatch && categoryMatch && modeMatch && dateMatch;
     // return categoryMatch && typeMatch && dateMatch && searchMatch;
   });
 
   // Summaries
   const totalIncome = transactions
-  ?.filter((t) => t.category.type === "income")
-  ?.reduce((sum, t) => sum + Number(t.amount), 0);
+    ?.filter((t) => t.category.type === "income")
+    ?.reduce((sum, t) => sum + Number(t.amount), 0);
 
-const totalExpense = transactions
-  ?.filter((t) => t.category.type === "expense")
-  ?.reduce((sum, t) => sum + Number(t.amount), 0);
+  const totalExpense = transactions
+    ?.filter((t) => t.category.type === "expense")
+    ?.reduce((sum, t) => sum + Number(t.amount), 0);
 
-const totalTransfer = transactions
-  ?.filter((t) => t.category.type === "transfer")
-  ?.reduce((sum, t) => sum + Number(t.amount), 0);
+  const totalTransfer = transactions
+    ?.filter((t) => t.category.type === "transfer")
+    ?.reduce((sum, t) => sum + Number(t.amount), 0);
 
-const totalBalance = Number(totalIncome) - Number(totalExpense);
-
-
+  const totalBalance = Number(totalIncome) - Number(totalExpense);
 
   const formateStringView = (str) => {
     return str
@@ -161,11 +162,10 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
       .join(" ");
   };
 
-
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-24 relative">
       {/* Summary Cards */}
-      
+
       <div className="mb-6">
         <div className="flex gap-4 mb-3">
           <div className="flex-1 bg-white p-4 rounded-xl shadow flex items-center gap-3">
@@ -246,17 +246,17 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
         </div>
         <div className="w-full flex gap-2 mb-4 flex-wrap overflow-x-auto scrollbar-hide">
           <button
-              key={"all"}
-              onClick={() => setSelectedMode('All')}
-              className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
-                selectedMode === "All"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-            >
-              {/* {pm.icon && <pm.icon className="w-4 h-4" />} */}
-              {"All"}
-            </button>
+            key={"all"}
+            onClick={() => setSelectedMode("All")}
+            className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
+              selectedMode === "All"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            {/* {pm.icon && <pm.icon className="w-4 h-4" />} */}
+            {"All"}
+          </button>
           {paymentModes?.map((pm) => (
             <button
               key={pm.id}
@@ -280,17 +280,17 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
 
         <div className="w-full scrollbar-hide overflow-x-auto scrollbar-hide flex gap-2 mb-4 flex-wrap">
           <button
-              key={"All"}
-              onClick={() => setSelectedCategory("All")}
-              className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
-                selectedCategory ==="All"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-            >
-              {/* {cat.icon && <cat.icon className="w-4 h-4" />} */}
-              {"All"}
-            </button>
+            key={"All"}
+            onClick={() => setSelectedCategory("All")}
+            className={`flex items-center gap-1 rounded-full px-4 py-2 transition ${
+              selectedCategory === "All"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            {/* {cat.icon && <cat.icon className="w-4 h-4" />} */}
+            {"All"}
+          </button>
           {categories?.map((cat) => (
             <button
               key={cat.id}
@@ -337,8 +337,12 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
             className="flex justify-between bg-white rounded-lg p-4 mb-3 shadow"
           >
             <div>
-              <div className="font-semibold text-gray-900">{item.category.name}</div>
-              <div className="text-sm text-gray-500">{formateStringView(item.category.type)} | {item.mode.name}</div>
+              <div className="font-semibold text-gray-900">
+                {item.category.name}
+              </div>
+              <div className="text-sm text-gray-500">
+                {formateStringView(item.category.type)} | {item.mode.name}
+              </div>
             </div>
             <div className="text-right">
               <div
