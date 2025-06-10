@@ -16,13 +16,7 @@ const Dashboard = () => {
     console.log(transactions);
   }, [transactions]);
 
-  if (
-    !totalIncome ||
-    !totalExpense ||
-    !totalTransfer ||
-    !totalBalance ||
-    !transactions
-  ) {
+  if (transactions?.length === 0) {
     return <FullScreenLoader />;
   }
 
@@ -91,7 +85,7 @@ const Dashboard = () => {
           Spending Overview
         </h2>
         <div className="text-slate-500 text-sm">
-          <BarCharts/>
+          <BarCharts />
         </div>
       </div>
     </div>
