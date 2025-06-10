@@ -221,7 +221,7 @@ const totalBalance = Number(totalIncome) - Number(totalExpense);
           <ListFilter className="w-5 h-5 text-blue-500" />
           Filter by Type
         </div>
-        <div className="w-full flex gap-2 mb-4 overflow-x-auto scrollbar-hide">
+        <div className="w-full flex gap-2 mb-4 overflow-x-auto hide-scrollbar">
           {transactionTypes.map(({ name, icon: Icon }) => (
             <button
               key={name}

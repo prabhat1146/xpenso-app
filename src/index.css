@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import 'tailwindcss'; */
-@import 'tailwind-scrollbar-hide/v4';
+.hide-scrollbar {
+  overflow-x: auto;              /* or overflow: auto; for both axes */
+  scrollbar-width: none;         /* Firefox */
+  -ms-overflow-style: none;      /* IE and Edge */
+}
 
-/* @import 'tailwind-scrollbar-hide'; */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari, Opera */
+}
+
 
 body {
   margin: 0;
