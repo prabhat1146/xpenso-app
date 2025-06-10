@@ -13,10 +13,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     setTransLength(transactions?.length);
-    console.log(transactions);
+    // console.log(transactions);
   }, [transactions]);
 
-  if (!transactions) {
+  if (!transactions ) {
     return <FullScreenLoader />;
   }
 

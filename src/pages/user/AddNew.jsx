@@ -83,7 +83,7 @@ const AddNew = ({ onSubmit }) => {
 
         setCategories(cleanedCatData);
 
-        // console.log(cleanedCatData);
+        console.log(cleanedCatData);
       })
       .catch((err) => {
         console.log(err);
