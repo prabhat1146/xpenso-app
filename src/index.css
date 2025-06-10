@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'tailwind-scrollbar-hide';
+/* @import 'tailwindcss'; */
+@import 'tailwind-scrollbar-hide/v4';
+
+/* @import 'tailwind-scrollbar-hide'; */
 
 body {
   margin: 0;
