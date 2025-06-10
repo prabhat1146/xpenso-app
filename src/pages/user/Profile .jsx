@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ErrorPage from "../../layout/Error";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const Profile = ({ user }) => {
+const Profile = () => {
   // `user` prop is an object with user data, e.g.:
   // { avatar, firstName, lastName, email, mobile, role, joinedAt }
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  if(!user){
-return <> <ErrorPage/></>
+  useEffect(() => {
+    // console.log(user);
+    if (!user) {
+      navigate("/pages/user/login");
+    }
+  }, [navigate, user]);
+
+  if (!user) {
+    return null;
   }
 
   return (
@@ -16,7 +27,7 @@ return <> <ErrorPage/></>
           {/* Avatar */}
           <img
             className="h-24 w-24 rounded-full object-cover border-2 border-cyan-500"
-            src={user?.avatar || "https://i.pravatar.cc/150?img=10"}
+            src={user?.avatar || ""}
             alt={`${user?.firstName} ${user?.lastName}`}
           />
           {/* User Basic Info */}
@@ -24,8 +35,13 @@ return <> <ErrorPage/></>
             <h1 className="text-3xl font-semibold text-gray-900">
               {user?.firstName} {user?.lastName}
             </h1>
-            <p className="text-cyan-600 font-medium">{user?.role || "User"}</p>
-            <p className="text-gray-600 mt-1">Member since: {new Date(user?.joinedAt).toLocaleDateString()}</p>
+            <p className="text-cyan-600 font-medium">
+              {user?.role || "User"}
+            </p>
+            <p className="text-gray-600 mt-1">
+              Member since:{" "}
+              {new Date(user?.joinedAt).toLocaleDateString()}
+            </p>
           </div>
         </div>
 
@@ -34,14 +50,29 @@ return <> <ErrorPage/></>
         {/* Profile Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div>
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Contact Info</h2>
-            <p className="text-gray-800"><span className="font-medium">Email:</span> {user.email}</p>
-            <p className="text-gray-800 mt-2"><span className="font-medium">Mobile:</span> {user.mobile}</p>
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+              Contact Info
+            </h2>
+            <p className="text-gray-800">
+              <span className="font-medium">Email:</span> {user.email}
+            </p>
+            <p className="text-gray-800 mt-2">
+              <span className="font-medium">Mobile:</span>{" "}
+              {user.mobile}
+            </p>
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Account Details</h2>
-            <p className="text-gray-800"><span className="font-medium">Username:</span> {user.username || "N/A"}</p>
-            <p className="text-gray-800 mt-2"><span className="font-medium">Status:</span> {user.isActive ? "Active" : "Inactive"}</p>
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+              Account Details
+            </h2>
+            <p className="text-gray-800">
+              <span className="font-medium">Username:</span>{" "}
+              {user.username || "N/A"}
+            </p>
+            <p className="text-gray-800 mt-2">
+              <span className="font-medium">Status:</span>{" "}
+              {user.isActive ? "Active" : "Inactive"}
+            </p>
           </div>
         </div>
 

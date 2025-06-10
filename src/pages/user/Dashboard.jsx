@@ -16,7 +16,13 @@ const Dashboard = () => {
     // console.log(transactions);
   }, [transactions]);
 
-  if (!transactions ) {
+  if (
+    !transactions ||
+    (!totalBalance && totalBalance !== 0) ||
+    (!totalIncome && totalIncome !== 0) ||
+    (!totalExpense && totalExpense !== 0) ||
+    (!totalTransfer && totalTransfer !== 0)
+  ) {
     return <FullScreenLoader />;
   }
 

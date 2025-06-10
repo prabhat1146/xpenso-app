@@ -1,13 +1,21 @@
 import React from "react";
+import { ArrowDownCircle, ArrowUpCircle, Wallet } from "lucide-react";
 import {
-  ArrowDownCircle,
-  ArrowUpCircle,
-  Wallet,
-} from "lucide-react";
-import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
-  LineChart, Line, PieChart, Pie, Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
+import UseGetTransactionsData from "../../hooks/useGetTransactionsData";
+import FullScreenLoader from "../../components/FullScreenLoader";
 
 const monthlyData = [
   { month: "Jan", income: 4000, expense: 2500 },
@@ -26,26 +34,40 @@ const categoryExpenseData = [
   { name: "Entertainment", value: 800, color: "#a78bfa" },
 ];
 
-const incomeData = monthlyData.map((item) => item.income);
-const expenseData = monthlyData.map((item) => item.expense);
+// const incomeData = monthlyData.map((item) => item.income);
+// const expenseData = monthlyData.map((item) => item.expense);
 const balanceData = monthlyData.map((item) => item.income - item.expense);
-const totalIncome = incomeData.reduce((a, b) => a + b, 0);
-const totalExpense = expenseData.reduce((a, b) => a + b, 0);
-const totalBalance = totalIncome - totalExpense;
+// const totalIncome = incomeData.reduce((a, b) => a + b, 0);
+// const totalExpense = expenseData.reduce((a, b) => a + b, 0);
+// const totalBalance = totalIncome - totalExpense;
 
 export default function ExpenseAnalysis() {
+  const { totalIncome, totalExpense, totalTransfer, totalBalance } =
+    UseGetTransactionsData();
+
+  if (
+    (!totalBalance && totalBalance !== 0) ||
+    (!totalIncome && totalIncome !== 0) ||
+    (!totalExpense && totalExpense !== 0) ||
+    (!totalTransfer && totalTransfer !== 0)
+  ) {
+    return <FullScreenLoader/>
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
-        Expense Analysis
+        {/* Expense Analysis */}
       </h1>
 
       {/* Summary Cards with Lucide Icons */}
-      <div className="flex gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
           <Wallet className="w-8 h-8 text-green-500" />
           <div>
-            <div className="text-gray-500 text-xs font-semibold">Total Balance</div>
+            <div className="text-gray-500 text-xs font-semibold">
+              Total Balance
+            </div>
             <div className="mt-2 text-lg font-bold text-green-600">
               ₹{totalBalance.toLocaleString()}
             </div>
@@ -54,7 +76,9 @@ export default function ExpenseAnalysis() {
         <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
           <ArrowDownCircle className="w-8 h-8 text-blue-500" />
           <div>
-            <div className="text-gray-500 text-xs font-semibold">Total Income</div>
+            <div className="text-gray-500 text-xs font-semibold">
+              Total Income
+            </div>
             <div className="mt-2 text-lg font-bold text-blue-600">
               ₹{totalIncome.toLocaleString()}
             </div>
@@ -63,9 +87,22 @@ export default function ExpenseAnalysis() {
         <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
           <ArrowUpCircle className="w-8 h-8 text-red-500" />
           <div>
-            <div className="text-gray-500 text-xs font-semibold">Total Expense</div>
+            <div className="text-gray-500 text-xs font-semibold">
+              Total Expense
+            </div>
             <div className="mt-2 text-lg font-bold text-red-600">
               ₹{totalExpense.toLocaleString()}
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 bg-white rounded-lg p-4 shadow flex items-center gap-3">
+          <ArrowUpCircle className="w-8 h-8 text-red-500" />
+          <div>
+            <div className="text-gray-500 text-xs font-semibold">
+              Total Transfer
+            </div>
+            <div className="mt-2 text-lg font-bold text-red-600">
+              ₹{totalTransfer.toLocaleString()}
             </div>
           </div>
         </div>
@@ -94,15 +131,23 @@ export default function ExpenseAnalysis() {
           Balance Trend
         </div>
         <ResponsiveContainer width="100%" height={250}>
-          <LineChart data={monthlyData.map((item, i) => ({
-            ...item,
-            balance: balanceData[i],
-          }))}>
+          <LineChart
+            data={monthlyData.map((item, i) => ({
+              ...item,
+              balance: balanceData[i],
+            }))}
+          >
             <XAxis dataKey="month" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="balance" stroke="#10b981" strokeWidth={2} name="Balance" />
+            <Line
+              type="monotone"
+              dataKey="balance"
+              stroke="#10b981"
+              strokeWidth={2}
+              name="Balance"
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
