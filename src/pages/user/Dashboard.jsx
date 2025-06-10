@@ -16,7 +16,7 @@ const Dashboard = () => {
     console.log(transactions);
   }, [transactions]);
 
-  if (transactions?.length === 0) {
+  if (!transactions) {
     return <FullScreenLoader />;
   }
 
@@ -88,6 +88,18 @@ const Dashboard = () => {
           <BarCharts />
         </div>
       </div>
+      {transactions?.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+          {/* Optional: Add an icon for visual feedback */}
+          {/* <FileText className="w-10 h-10 mb-3 text-gray-300" /> */}
+          <div className="text-lg font-semibold mb-1">
+            No transactions found
+          </div>
+          <div className="text-sm text-gray-400">
+            Your recent transactions will appear here once added.
+          </div>
+        </div>
+      )}
     </div>
   );
 };
