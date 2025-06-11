@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import ErrorPage from "../../layout/Error";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { formatDateTime, formateStringView } from "../../utils/functions/funUtils";
+import { User2Icon } from "lucide-react";
 
 const Profile = () => {
   // `user` prop is an object with user data, e.g.:
@@ -25,22 +27,18 @@ const Profile = () => {
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
         <div className="flex items-center space-x-6">
           {/* Avatar */}
-          <img
-            className="h-24 w-24 rounded-full object-cover border-2 border-cyan-500"
-            src={user?.avatar || ""}
-            alt={`${user?.firstName} ${user?.lastName}`}
-          />
+          <User2Icon size={32}/>
           {/* User Basic Info */}
           <div>
             <h1 className="text-3xl font-semibold text-gray-900">
-              {user?.firstName} {user?.lastName}
+              {formateStringView(user?.firstName)} {formateStringView(user?.lastName)}
             </h1>
             <p className="text-cyan-600 font-medium">
               {user?.role || "User"}
             </p>
             <p className="text-gray-600 mt-1">
               Member since:{" "}
-              {new Date(user?.joinedAt).toLocaleDateString()}
+              {formatDateTime(user?.joinedAt).fullDate}
             </p>
           </div>
         </div>
@@ -60,8 +58,12 @@ const Profile = () => {
               <span className="font-medium">Mobile:</span>{" "}
               {user.mobile}
             </p>
+             <p className="text-gray-800 mt-2">
+              <span className="font-medium">Status:</span>{" "}
+              <span className="text-green-600">{user?.status}</span>
+            </p>
           </div>
-          <div>
+          {/* <div>
             <h2 className="text-xl font-semibold text-gray-700 mb-4">
               Account Details
             </h2>
@@ -73,17 +75,17 @@ const Profile = () => {
               <span className="font-medium">Status:</span>{" "}
               {user.isActive ? "Active" : "Inactive"}
             </p>
-          </div>
+          </div> */}
         </div>
 
-        <div className="mt-10 flex justify-end">
+        {/* <div className="mt-10 flex justify-end">
           <button
             className="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-3 rounded-md font-semibold shadow-md
               transition duration-300 transform hover:scale-105"
           >
             Edit Profile
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

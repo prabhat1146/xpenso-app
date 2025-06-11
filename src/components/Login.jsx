@@ -44,7 +44,7 @@ const Login = () => {
       //   localStorage.setItem("accessToken", data?.data?.accessToken);
       //   localStorage.setItem("refreshToken", data?.data?.refreshToken);
       //   localStorage.setItem("Token", data?.data?.refreshToken);
-      //   console.log(data)
+        console.log(data)
       login(
         data?.data?.accessToken,
         data?.data?.refreshToken,

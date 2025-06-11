@@ -6,8 +6,14 @@ import { formateStringView } from "../../utils/functions/funUtils";
 import BarCharts from "../../components/charts/BarCharts";
 
 const Dashboard = () => {
-  const { totalIncome, totalExpense, totalTransfer, totalBalance } =
-    UseGetTransactionsData();
+  const {
+    totalIncome,
+    totalExpense,
+    totalTransfer,
+    totalBalance,
+    perMonthTrans,
+    perDayTrans
+  } = UseGetTransactionsData();
   const { transactions } = UseGetTransactions();
   const [transLength, setTransLength] = useState(transactions?.length);
 
@@ -38,21 +44,27 @@ const Dashboard = () => {
           <h2 className="text-lg font-semibold text-slate-700 mb-2">
             Total Balance
           </h2>
-          <p className="text-2xl font-bold text-green-600">₹{totalBalance}</p>
+          <p className="text-2xl font-bold text-green-600">
+            ₹{(Number(perMonthTrans[0]?.income || 0)-Number(perMonthTrans[0]?.expense || 0))?.toLocaleString()}
+          </p>
           <p className="text-sm text-slate-500 mt-1">This month</p>
         </div>
         <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
           <h2 className="text-lg font-semibold text-slate-700 mb-2">
             Total Income
           </h2>
-          <p className="text-2xl font-bold text-cyan-500">₹{totalIncome}</p>
+          <p className="text-2xl font-bold text-cyan-500">
+            ₹{Number(perMonthTrans[0]?.income || 0)?.toLocaleString()}
+          </p>
           <p className="text-sm text-slate-500 mt-1">This month</p>
         </div>
         <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
           <h2 className="text-lg font-semibold text-slate-700 mb-2">
             Total Expenses
           </h2>
-          <p className="text-2xl font-bold text-red-600">₹{totalExpense}</p>
+          <p className="text-2xl font-bold text-red-600">
+            ₹{Number(perMonthTrans[0]?.expense || 0)?.toLocaleString()}
+          </p>
           <p className="text-sm text-slate-500 mt-1">This month</p>
         </div>
 
@@ -61,7 +73,9 @@ const Dashboard = () => {
           <h2 className="text-lg font-semibold text-slate-700 mb-2">
             Total Transfer
           </h2>
-          <p className="text-2xl font-bold text-orange-600">₹{totalTransfer}</p>
+          <p className="text-2xl font-bold text-orange-600">
+            ₹{Number(perMonthTrans[0]?.transfer || 0)?.toLocaleString()}
+          </p>
           <p className="text-sm text-slate-500 mt-1">This month</p>
         </div>
 
@@ -78,7 +92,7 @@ const Dashboard = () => {
                 .map((t, ind) => (
                   <li key={ind}>
                     {formateStringView(t?.category?.type)} | {t?.category?.name}{" "}
-                    - ₹{t?.amount}
+                    - ₹{Number(t?.amount || 0)?.toLocaleString()}
                   </li>
                 ))}
           </ul>
@@ -91,7 +105,7 @@ const Dashboard = () => {
           Spending Overview
         </h2>
         <div className="text-slate-500 text-sm">
-          <BarCharts />
+          <BarCharts dataKey="date" data={perDayTrans} />
         </div>
       </div>
       {transactions?.length === 0 && (

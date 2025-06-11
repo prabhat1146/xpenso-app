@@ -45,7 +45,7 @@ const AddNew = ({ onSubmit }) => {
     globalApi
       .get(subRul)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const modeData = res.data?.data;
         const cleanData = modeData.map((d) => ({
           ...d,
@@ -83,7 +83,7 @@ const AddNew = ({ onSubmit }) => {
 
         setCategories(cleanedCatData);
 
-        console.log(cleanedCatData);
+        // console.log(cleanedCatData);
       })
       .catch((err) => {
         console.log(err);
@@ -242,7 +242,7 @@ const AddNew = ({ onSubmit }) => {
 
         {/* Amount Input */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700 flex items-center gap-1">
+          <label className=" mb-2 text-sm font-medium text-gray-700 flex items-center gap-1">
             <IndianRupee className="w-4 h-4" /> Amount (INR)
           </label>
           <input

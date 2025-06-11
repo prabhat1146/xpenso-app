@@ -100,7 +100,7 @@ export default function TransactionsTab({ onAddTransaction }) {
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    console.log(transactions);
+    // console.log(transactions);
   }, [transactions]);
 
   if (
@@ -108,8 +108,7 @@ export default function TransactionsTab({ onAddTransaction }) {
     paymentModes?.length === 0 ||
     !categories ||
     categories.length === 0 ||
-    !transactions ||
-    transactions.length === 0
+    !transactions 
   ) {
     return <FullScreenLoader />;
   }
@@ -129,11 +128,11 @@ export default function TransactionsTab({ onAddTransaction }) {
     if (selectedDateFilter === "Last 7 Days") {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      dateMatch = new Date(tx.date) >= sevenDaysAgo;
+      dateMatch = new Date(tx?.createdAt) >= sevenDaysAgo;
     } else if (selectedDateFilter === "Last 30 Days") {
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      dateMatch = new Date(tx.date) >= thirtyDaysAgo;
+      dateMatch = new Date(tx?.createdAt) >= thirtyDaysAgo;
     }
 
     return typeMatch && categoryMatch && modeMatch && dateMatch;
@@ -363,7 +362,7 @@ export default function TransactionsTab({ onAddTransaction }) {
                 {item.category.type === "transfer" && (
                   <ArrowLeftRight className="w-5 h-5" />
                 )}
-                ₹{item.amount.toLocaleString()}
+                ₹{item.amount && Number(item.amount || 0).toLocaleString()}
               </div>
               <div className="text-xs text-gray-400">{item?.date}</div>
             </div>

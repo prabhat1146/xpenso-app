@@ -16,6 +16,14 @@ import {
 } from "recharts";
 import UseGetTransactionsData from "../../hooks/useGetTransactionsData";
 import FullScreenLoader from "../../components/FullScreenLoader";
+import BarCharts from "../../components/charts/BarCharts";
+import LineCharts from "../../components/charts/LineCharts";
+import PieCharts from "../../components/charts/PieCharts";
+import {
+  filterCategoryByTimeRange,
+  groupByExpenseCategory,
+} from "../../utils/functions/funUtils";
+import UseGetTransactions from "../../hooks/useGetTransactions";
 
 const monthlyData = [
   { month: "Jan", income: 4000, expense: 2500 },
@@ -42,8 +50,16 @@ const balanceData = monthlyData.map((item) => item.income - item.expense);
 // const totalBalance = totalIncome - totalExpense;
 
 export default function ExpenseAnalysis() {
-  const { totalIncome, totalExpense, totalTransfer, totalBalance } =
-    UseGetTransactionsData();
+  const {
+    perDayTrans,
+    totalIncome,
+    totalExpense,
+    totalTransfer,
+    totalBalance,
+    perMonthTrans,
+  } = UseGetTransactionsData();
+
+  const { transactions } = UseGetTransactions();
 
   if (
     (!totalBalance && totalBalance !== 0) ||
@@ -51,7 +67,7 @@ export default function ExpenseAnalysis() {
     (!totalExpense && totalExpense !== 0) ||
     (!totalTransfer && totalTransfer !== 0)
   ) {
-    return <FullScreenLoader/>
+    return <FullScreenLoader />;
   }
 
   return (
@@ -113,16 +129,9 @@ export default function ExpenseAnalysis() {
         <div className="text-lg font-semibold text-gray-900 mb-4">
           Monthly Income vs Expense
         </div>
-        <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={monthlyData}>
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="income" fill="#60a5fa" name="Income" />
-            <Bar dataKey="expense" fill="#f87171" name="Expense" />
-          </BarChart>
-        </ResponsiveContainer>
+        <div>
+          <BarCharts dataKey="monthName" data={perMonthTrans} />
+        </div>
       </div>
 
       {/* Line Chart */}
@@ -130,26 +139,17 @@ export default function ExpenseAnalysis() {
         <div className="text-lg font-semibold text-gray-900 mb-4">
           Balance Trend
         </div>
-        <ResponsiveContainer width="100%" height={250}>
-          <LineChart
-            data={monthlyData.map((item, i) => ({
-              ...item,
-              balance: balanceData[i],
-            }))}
-          >
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="balance"
-              stroke="#10b981"
-              strokeWidth={2}
-              name="Balance"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div>
+          <LineCharts
+            data={perDayTrans}
+            dataKey="balance"
+            xKey="date"
+            xLabel="Date"
+            yLabel="Amount (₹)"
+            lineName="Daily Expenses"
+            stroke="#f87171"
+          />
+        </div>
       </div>
 
       {/* Pie Chart */}
@@ -157,7 +157,7 @@ export default function ExpenseAnalysis() {
         <div className="text-lg font-semibold text-gray-900 mb-4">
           Expense by Category
         </div>
-        <ResponsiveContainer width="100%" height={250}>
+        {/* <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
               data={categoryExpenseData}
@@ -176,8 +176,18 @@ export default function ExpenseAnalysis() {
             <Tooltip />
             <Legend />
           </PieChart>
-        </ResponsiveContainer>
-        <div className="mt-4">
+        </ResponsiveContainer> */}
+
+        <div>
+          {transactions?.length > 0 && (
+            <PieCharts
+              data={groupByExpenseCategory(
+                filterCategoryByTimeRange(transactions)
+              )}
+            />
+          )}
+        </div>
+        {/* <div className="mt-4">
           {categoryExpenseData.map(({ name, color, value }) => (
             <div key={name} className="flex items-center mb-2">
               <span
@@ -189,7 +199,7 @@ export default function ExpenseAnalysis() {
               </span>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

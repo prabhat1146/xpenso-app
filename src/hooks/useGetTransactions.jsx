@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import globalApi from "../utils/api/globalApi";
+import { formatDateTime } from "../utils/functions/funUtils";
 
 const UseGetTransactions = () => {
   const [transactions, setTransactions] = useState(null);
@@ -39,7 +40,14 @@ const UseGetTransactions = () => {
                 ...d.mode,
                 name:formateStringView(d.mode.name),
                 value:d.mode.name
-            }
+            },
+            month:formatDateTime(d?.createdAt)?.month,
+            monthName:formatDateTime(d?.createdAt)?.monthName,
+            year:formatDateTime(d?.createdAt)?.year,
+            time:formatDateTime(d?.createdAt).time,
+            date:formatDateTime(d?.createdAt).fullDate,
+            day:formatDateTime(d?.createdAt).day,
+            dayName:formatDateTime(d?.createdAt).dayName
           }));
 
         // console.log("c", cleanData);
