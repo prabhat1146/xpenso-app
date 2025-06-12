@@ -72,7 +72,7 @@ const Login = () => {
           }`}
       >
         <h2 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
-          ExpenseApp Login
+          Login
         </h2>
 
         {error && (
