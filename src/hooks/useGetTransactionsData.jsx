@@ -4,12 +4,15 @@ import UseGetTransactions from "./useGetTransactions";
 const UseGetTransactionsData = () => {
   const { transactions } = UseGetTransactions();
 
-  const [totalIncome, setTotalIncome] = useState(0);
-  const [totalExpense, setTotalExpense] = useState(0);
-  const [totalTransfer, setTotalTransfer] = useState(0);
-  const [totalBalance, setTotalBalance] = useState(0);
-  const [perMonthTrans, setPerMonthTrans] = useState([]);
-  const [perDayTrans, setPerDayTrans] = useState([]);
+  const [totalIncome, setTotalIncome] = useState(null);
+  const [totalExpense, setTotalExpense] = useState(null);
+  const [totalTransfer, setTotalTransfer] = useState(null);
+  const [totalBalance, setTotalBalance] = useState(null);
+  const [perMonthTrans, setPerMonthTrans] = useState(null);
+  const [perDayTrans, setPerDayTrans] = useState(null);
+
+  const [transDataLoading, setTransDataLoading] = useState(true);
+  const [transDataErr, setTransDataErr] = useState(null);
 
   useEffect(() => {
     const totalIncome = transactions
@@ -26,10 +29,10 @@ const UseGetTransactionsData = () => {
 
     const totalBalance = Number(totalIncome) - Number(totalExpense);
 
-    setTotalIncome(totalIncome);
-    setTotalExpense(totalExpense);
-    setTotalTransfer(totalTransfer);
-    setTotalBalance(totalBalance);
+    setTotalIncome(totalIncome || 0);
+    setTotalExpense(totalExpense || 0);
+    setTotalTransfer(totalTransfer || 0);
+    setTotalBalance(totalBalance || 0);
   }, [transactions]);
 
   useEffect(() => {
@@ -96,8 +99,10 @@ const UseGetTransactionsData = () => {
         ...s,
         balance: Number(s?.income || 0) - Number(s?.expense || 0),
       }));
-      setPerMonthTrans(summaryWithBalance);
+      setPerMonthTrans(summaryWithBalance || 0);
       // console.log("m", summaryWithBalance);
+    }else{
+      setPerMonthTrans(0);
     }
   }, [transactions]);
 
@@ -154,8 +159,30 @@ const UseGetTransactionsData = () => {
       }));
       setPerDayTrans(summaryWithBalance);
       // console.log('d',summaryWithBalance);
+    }else{
+      setPerDayTrans(0);
     }
   }, [transactions]);
+
+  useEffect(() => {
+    if (
+      totalBalance !== null &&
+      totalIncome !== null &&
+      totalExpense !== null &&
+      totalTransfer !== null &&
+      perDayTrans !== null &&
+      perMonthTrans !== null
+    ) {
+      setTransDataLoading(false);
+    }
+  }, [
+    totalBalance,
+    totalIncome,
+    totalExpense,
+    totalTransfer,
+    perDayTrans,
+    perMonthTrans,
+  ]);
 
   return {
     totalIncome,
@@ -164,6 +191,8 @@ const UseGetTransactionsData = () => {
     totalBalance,
     perMonthTrans,
     perDayTrans,
+    transDataErr,
+    transDataLoading
   };
 };
 

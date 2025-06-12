@@ -125,39 +125,49 @@ export default function ExpenseAnalysis() {
       </div>
 
       {/* Bar Chart */}
-      <div className="bg-white rounded-lg p-4 shadow mb-6">
-        <div className="text-lg font-semibold text-gray-900 mb-4">
-          Monthly Income vs Expense
-        </div>
-        <div>
-          <BarCharts dataKey="monthName" data={perMonthTrans} />
-        </div>
-      </div>
 
-      {/* Line Chart */}
-      <div className="bg-white rounded-lg p-4 shadow mb-6">
-        <div className="text-lg font-semibold text-gray-900 mb-4">
-          Balance Trend
-        </div>
-        <div>
-          <LineCharts
-            data={perDayTrans}
-            dataKey="balance"
-            xKey="date"
-            xLabel="Date"
-            yLabel="Amount (₹)"
-            lineName="Daily Expenses"
-            stroke="#f87171"
-          />
-        </div>
-      </div>
+      {transactions === null || transactions.length === 0 ? (
+        <>
+          <div className="text-center text-gray-400 py-8">
+            No transactions found.
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <div className="bg-white rounded-lg p-4 shadow mb-6">
+              <div className="text-lg font-semibold text-gray-900 mb-4">
+                Monthly Income vs Expense
+              </div>
+              <div>
+                <BarCharts dataKey="monthName" data={perMonthTrans} />
+              </div>
+            </div>
 
-      {/* Pie Chart */}
-      <div className="bg-white rounded-lg p-4 shadow mb-6">
-        <div className="text-lg font-semibold text-gray-900 mb-4">
-          Expense by Category
-        </div>
-        {/* <ResponsiveContainer width="100%" height={250}>
+            {/* Line Chart */}
+            <div className="bg-white rounded-lg p-4 shadow mb-6">
+              <div className="text-lg font-semibold text-gray-900 mb-4">
+                Balance Trend
+              </div>
+              <div>
+                <LineCharts
+                  data={perDayTrans}
+                  dataKey="balance"
+                  xKey="date"
+                  xLabel="Date"
+                  yLabel="Amount (₹)"
+                  lineName="Daily Expenses"
+                  stroke="#f87171"
+                />
+              </div>
+            </div>
+
+            {/* Pie Chart */}
+            <div className="bg-white rounded-lg p-4 shadow mb-6">
+              <div className="text-lg font-semibold text-gray-900 mb-4">
+                Expense by Category
+              </div>
+              {/* <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
               data={categoryExpenseData}
@@ -178,16 +188,17 @@ export default function ExpenseAnalysis() {
           </PieChart>
         </ResponsiveContainer> */}
 
-        <div>
-          {transactions?.length > 0 && (
-            <PieCharts
-              data={groupByExpenseCategory(
-                filterCategoryByTimeRange(transactions)
-              )}
-            />
-          )}
-        </div>
-        {/* <div className="mt-4">
+              <div>
+                {transactions?.length > 0 && (
+                  <PieCharts
+                    data={groupByExpenseCategory(
+                      filterCategoryByTimeRange(transactions)
+                    )}
+                  />
+                )}
+              </div>
+            </div>
+            {/* <div className="mt-4">
           {categoryExpenseData.map(({ name, color, value }) => (
             <div key={name} className="flex items-center mb-2">
               <span
@@ -200,7 +211,9 @@ export default function ExpenseAnalysis() {
             </div>
           ))}
         </div> */}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

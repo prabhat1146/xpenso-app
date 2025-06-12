@@ -3,17 +3,16 @@ import globalApi from "../utils/api/globalApi";
 
 const useGetModes = () => {
   const [paymentModes, setPaymentModes] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [modeLoading, setModeLoading] = useState(true);
   const [err, setErr] = useState(null);
 
   useEffect(() => {
     const subRul = `/api/v1/user/modes/get-modes`;
-    setLoading(true);
     globalApi
       .get(subRul)
       .then((res) => {
         if (res.error) {
-            setLoading(false);
+            setModeLoading(false);
             setPaymentModes([]);
           return setErr(res.error);
         }
@@ -27,7 +26,9 @@ const useGetModes = () => {
             .join(" "),
         }));
 
-        setPaymentModes(cleanData);
+        setPaymentModes(cleanData || []);
+        setModeLoading(false);
+        setErr(null);
         // console.log(cleanData);
       })
       .catch((err) => {
@@ -35,7 +36,7 @@ const useGetModes = () => {
       })
       .finally((final) => {});
   }, []);
-  return { paymentModes, loading, err };
+  return { paymentModes, modeLoading, err };
 };
 
 export default useGetModes;

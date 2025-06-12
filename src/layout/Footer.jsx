@@ -9,6 +9,7 @@ import {
   Linkedin,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { contact_us, contact_us_mobile_primary } from "../constants";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -53,8 +54,8 @@ const Footer = () => {
         <div>
           <h3 className="text-white text-md font-semibold mb-2">Contact Us</h3>
           <ul className="text-sm space-y-2">
-            <li className="flex items-center gap-2"><Phone size={16} /> +91 7080206885</li>
-            <li className="flex items-center gap-2"><Mail size={16} /> prabhat@businessbasket.in</li>
+            <li className="flex items-center gap-2"><Phone size={16} />{contact_us_mobile_primary}</li>
+            <li className="flex items-center gap-2"><Mail size={16} />{contact_us}</li>
           </ul>
         </div>
 
@@ -63,8 +64,8 @@ const Footer = () => {
           <h3 className="text-white text-md font-semibold mb-2">Follow Us</h3>
           <div className="flex gap-4 mt-2">
             <a href="https://www.facebook.com/share/16nwjg6cGE/"><Facebook size={20} /></a>
-            <a href="#"><Instagram size={20} /></a>
-            <a href="#"><Twitter size={20} /></a>
+            {/* <a href="#"><Instagram size={20} /></a> */}
+            {/* <a href="#"><Twitter size={20} /></a> */}
             <a href="https://www.linkedin.com/company/mithilax-private-limited/"><Linkedin size={20} /></a>
           </div>
         </div>

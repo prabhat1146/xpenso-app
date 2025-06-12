@@ -9,11 +9,13 @@ import {
   ListFilter,
   List,
 } from "lucide-react";
+import * as lucideIcon from 'lucide-react'
 
 import useGetModes from "../../hooks/useGetModes";
 import UseGetCategories from "../../hooks/useGetCategories";
 import UseGetTransactions from "../../hooks/useGetTransactions";
 import FullScreenLoader from "../../components/FullScreenLoader";
+import { LucideIcon } from "../../utils/functions/funUtils";
 
 // const transactionsData = [
 //   {
@@ -89,9 +91,9 @@ const dateFilters = [
 ];
 
 export default function TransactionsTab({ onAddTransaction }) {
-  const { paymentModes, loading, err } = useGetModes();
-  const { categories } = UseGetCategories();
-  const { transactions } = UseGetTransactions();
+  const { paymentModes, modeLoading, err } = useGetModes();
+  const { categories, catLoading } = UseGetCategories();
+  const { transactions, transLoading } = UseGetTransactions();
 
   const [selectedType, setSelectedType] = useState("All");
   const [selectedMode, setSelectedMode] = useState("All");
@@ -100,16 +102,10 @@ export default function TransactionsTab({ onAddTransaction }) {
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    // console.log(transactions);
+    console.log(transactions);
   }, [transactions]);
 
-  if (
-    !paymentModes ||
-    paymentModes?.length === 0 ||
-    !categories ||
-    categories.length === 0 ||
-    !transactions 
-  ) {
+  if (modeLoading || catLoading || transLoading) {
     return <FullScreenLoader />;
   }
 
@@ -160,6 +156,8 @@ export default function TransactionsTab({ onAddTransaction }) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-24 relative">
@@ -266,7 +264,7 @@ export default function TransactionsTab({ onAddTransaction }) {
                   : "bg-gray-200 text-gray-700"
               }`}
             >
-              {pm.icon && <pm.icon className="w-4 h-4" />}
+              {pm?.icon && <LucideIcon name={pm?.icon} color={pm?.color} className="w-4 h-4" />}
               {pm?.name}
             </button>
           ))}
@@ -300,7 +298,7 @@ export default function TransactionsTab({ onAddTransaction }) {
                   : "bg-gray-200 text-gray-700"
               }`}
             >
-              {cat.icon && <cat.icon className="w-4 h-4" />}
+              {cat?.icon && <LucideIcon name={cat?.icon} color={cat?.color} className="w-4 h-4" />}
               {cat?.name}
             </button>
           ))}

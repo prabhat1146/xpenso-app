@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
+import { contact_us } from '../../constants';
 
 const PrivacyPolicy = () => {
   return (
@@ -48,7 +49,7 @@ const PrivacyPolicy = () => {
         <section className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">4. Your Rights</h2>
           <p className="text-gray-700">
-            You can access, update, or delete your personal data at any time from your account settings. For any privacy-related requests, please contact us at <a href="mailto:support@xpenso.com" className="text-indigo-600 underline">support@xpenso.com</a>.
+            You can access, update, or delete your personal data at any time from your account settings. For any privacy-related requests, please contact us at <a href={`mailto:${contact_us}`} className="text-indigo-600 underline">{contact_us}</a>.
           </p>
         </section>
 

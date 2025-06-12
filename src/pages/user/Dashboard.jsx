@@ -12,23 +12,18 @@ const Dashboard = () => {
     totalTransfer,
     totalBalance,
     perMonthTrans,
-    perDayTrans
+    perDayTrans,
+    transDataLoading,
   } = UseGetTransactionsData();
-  const { transactions } = UseGetTransactions();
+  const { transactions, transLoading, transErr } = UseGetTransactions();
   const [transLength, setTransLength] = useState(transactions?.length);
 
   useEffect(() => {
     setTransLength(transactions?.length);
-    // console.log(transactions);
+    console.log(transactions);
   }, [transactions]);
 
-  if (
-    !transactions ||
-    (!totalBalance && totalBalance !== 0) ||
-    (!totalIncome && totalIncome !== 0) ||
-    (!totalExpense && totalExpense !== 0) ||
-    (!totalTransfer && totalTransfer !== 0)
-  ) {
+  if (transDataLoading) {
     return <FullScreenLoader />;
   }
 
@@ -45,7 +40,11 @@ const Dashboard = () => {
             Total Balance
           </h2>
           <p className="text-2xl font-bold text-green-600">
-            ₹{(Number(perMonthTrans[0]?.income || 0)-Number(perMonthTrans[0]?.expense || 0))?.toLocaleString()}
+            ₹
+            {(
+              Number(perMonthTrans[0]?.income || 0) -
+              Number(perMonthTrans[0]?.expense || 0)
+            )?.toLocaleString()}
           </p>
           <p className="text-sm text-slate-500 mt-1">This month</p>
         </div>
@@ -85,40 +84,50 @@ const Dashboard = () => {
             Recent Transactions
           </h2>
           <ul className="text-sm text-slate-600 space-y-1">
-            {transactions &&
-              [...transactions]
-                .reverse()
-                .slice(0, 5)
-                .map((t, ind) => (
-                  <li key={ind}>
-                    {formateStringView(t?.category?.type)} | {t?.category?.name}{" "}
-                    - ₹{Number(t?.amount || 0)?.toLocaleString()}
-                  </li>
-                ))}
+            {transactions ? (
+              <>
+                {[...transactions]
+                  .reverse()
+                  .slice(0, 5)
+                  .map((t, ind) => (
+                    <li key={ind}>
+                      {formateStringView(t?.category?.type)} |{" "}
+                      {t?.category?.name} - ₹
+                      {Number(t?.amount || 0)?.toLocaleString()}
+                    </li>
+                  ))}
+              </>
+            ) : (
+              <> No transactions found</>
+            )}
           </ul>
         </div>
       </div>
 
-      {/* Placeholder for charts or recent activity */}
-      <div className="mt-10 bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-semibold text-slate-700 mb-4">
-          Spending Overview
-        </h2>
-        <div className="text-slate-500 text-sm">
-          <BarCharts dataKey="date" data={perDayTrans} />
-        </div>
-      </div>
-      {transactions?.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-          {/* Optional: Add an icon for visual feedback */}
-          {/* <FileText className="w-10 h-10 mb-3 text-gray-300" /> */}
-          <div className="text-lg font-semibold mb-1">
-            No transactions found
+      {transactions === null || transactions?.length === 0 ? (
+        <>
+          <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+            {/* Optional: Add an icon for visual feedback */}
+            {/* <FileText className="w-10 h-10 mb-3 text-gray-300" /> */}
+            <div className="text-lg font-semibold mb-1">
+              No transactions found
+            </div>
+            <div className="text-sm text-gray-400">
+              Your recent transactions will appear here once added.
+            </div>
           </div>
-          <div className="text-sm text-gray-400">
-            Your recent transactions will appear here once added.
+        </>
+      ) : (
+        <>
+          <div className="mt-10 bg-white rounded-xl shadow p-6">
+            <h2 className="text-xl font-semibold text-slate-700 mb-4">
+              Spending Overview
+            </h2>
+            <div className="text-slate-500 text-sm">
+              <BarCharts dataKey="date" data={perDayTrans} />
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

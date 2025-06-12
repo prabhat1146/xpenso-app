@@ -3,7 +3,7 @@ import globalApi from '../utils/api/globalApi';
 
 const UseGetCategories = () => {
     const [categories,setCategories]=useState(null);
-    const [catLoading,setCatLoading]=useState(null);
+    const [catLoading,setCatLoading]=useState(true);
     const [catErr,setCatErr]=useState(null);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const UseGetCategories = () => {
             .join(" "),
         }));
 
-        setCategories(cleanedCatData);
+        setCategories(cleanedCatData || []);
         setCatErr(null);
         setCatLoading(false);
       })

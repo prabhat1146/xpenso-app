@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
+import { contact_us } from '../../constants';
 
 const TermsAndConditions = () => {
   return (
@@ -54,7 +55,7 @@ const TermsAndConditions = () => {
         <section className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">6. Contact Us</h2>
           <p className="text-gray-700">
-            If you have any questions about these Terms &amp; Conditions, please contact us at <a href="mailto:support@xpenso.com" className="text-indigo-600 underline">support@xpenso.com</a>.
+            If you have any questions about these Terms &amp; Conditions, please contact us at <a href={`mailto:${contact_us}`} className="text-indigo-600 underline">{contact_us}</a>.
           </p>
         </section>
 

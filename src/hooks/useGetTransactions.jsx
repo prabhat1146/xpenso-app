@@ -4,7 +4,7 @@ import { formatDateTime } from "../utils/functions/funUtils";
 
 const UseGetTransactions = () => {
   const [transactions, setTransactions] = useState(null);
-  const [transLoading, setTransLoading] = useState(false);
+  const [transLoading, setTransLoading] = useState(true);
   const [transErr, setTransErr] = useState(null);
 
    const formateStringView = (str) => {
@@ -28,8 +28,8 @@ const UseGetTransactions = () => {
         const transactionData = res?.data?.data;
         // console.log("t", transactionData);
         const cleanData = transactionData
-          ?.filter((d) => d.category) // Only include items where category exists
-          .map((d) => ({
+          ?.filter((d) => d?.category) // Only include items where category exists
+          ?.map((d) => ({
             ...d,
             category: {
               ...d.category,
@@ -38,8 +38,8 @@ const UseGetTransactions = () => {
             },
             mode:{
                 ...d.mode,
-                name:formateStringView(d.mode.name),
-                value:d.mode.name
+                name:formateStringView(d.mode?.name),
+                value:d.mode?.name
             },
             month:formatDateTime(d?.createdAt)?.month,
             monthName:formatDateTime(d?.createdAt)?.monthName,
@@ -51,11 +51,12 @@ const UseGetTransactions = () => {
           }));
 
         // console.log("c", cleanData);
-        setTransactions(cleanData)
+        setTransactions(cleanData || [])
         setTransLoading(false);
         setTransErr(null);
       })
       .catch((err) => {
+        setTransLoading(false);
         console.log(err);
       });
   }, []);

@@ -13,8 +13,9 @@ import {
   Area,
   Legend,
   CartesianGrid,
+  LineChart,
+  Line,
 } from "recharts";
-import Alert from "../components/Alert";
 
 const expenseData = [
   { month: "Jan", expense: 1200 },
@@ -44,10 +45,30 @@ const incomeExpenseData = [
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F"];
 
+const transactions = [
+  { id: 1, date: "2025-06-01", category: "Food", amount: 150, type: "Expense" },
+  { id: 2, date: "2025-06-02", category: "Salary", amount: 2000, type: "Income" },
+  { id: 3, date: "2025-06-03", category: "Travel", amount: 300, type: "Expense" },
+  { id: 4, date: "2025-06-04", category: "Freelance", amount: 500, type: "Income" },
+];
+
 const Home = () => {
   const totalIncome = incomeExpenseData.reduce((acc, cur) => acc + cur.income, 0);
   const totalExpense = incomeExpenseData.reduce((acc, cur) => acc + cur.expense, 0);
   const savings = totalIncome - totalExpense;
+
+  const balanceData = incomeExpenseData.map((item) => ({
+    month: item.month,
+    balance: item.income - item.expense,
+  }));
+
+  const savingsTrendData = incomeExpenseData.map((item, index) => {
+    const previous = index === 0 ? 0 : incomeExpenseData[index - 1].income - incomeExpenseData[index - 1].expense;
+    return {
+      month: item.month,
+      savings: item.income - item.expense + previous,
+    };
+  });
 
   return (
     <div className="p-6 space-y-10">
@@ -71,7 +92,7 @@ const Home = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Bar Chart: Monthly Expense */}
+        {/* Monthly Expenses */}
         <div className="bg-white p-6 rounded-xl shadow">
           <h2 className="text-lg font-semibold mb-4">Monthly Expenses</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -84,7 +105,7 @@ const Home = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Pie Chart: Category-wise Spending */}
+        {/* Spending by Category */}
         <div className="bg-white p-6 rounded-xl shadow">
           <h2 className="text-lg font-semibold mb-4">Spending by Category</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -109,7 +130,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Area Chart: Income vs Expense */}
+      {/* Income vs Expense */}
       <div className="bg-white p-6 rounded-xl shadow">
         <h2 className="text-lg font-semibold mb-4">Income vs Expense</h2>
         <ResponsiveContainer width="100%" height={300}>
@@ -129,24 +150,85 @@ const Home = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip />
             <Legend />
-            <Area
-              type="monotone"
-              dataKey="income"
-              stroke="#00C49F"
-              fillOpacity={1}
-              fill="url(#income)"
-            />
-            <Area
-              type="monotone"
-              dataKey="expense"
-              stroke="#FF8042"
-              fillOpacity={1}
-              fill="url(#expense)"
-            />
+            <Area type="monotone" dataKey="income" stroke="#00C49F" fill="url(#income)" />
+            <Area type="monotone" dataKey="expense" stroke="#FF8042" fill="url(#expense)" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
-       {/* <Alert message={"message"}/> */}
+
+      {/* Monthly Balance Chart */}
+      <div className="bg-white p-6 rounded-xl shadow">
+        <h2 className="text-lg font-semibold mb-4">Monthly Balance</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={balanceData}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="balance" fill="#82ca9d" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Savings Trend Line Chart */}
+      <div className="bg-white p-6 rounded-xl shadow">
+        <h2 className="text-lg font-semibold mb-4">Savings Trend</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={savingsTrendData}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="savings" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Top Categories Table */}
+      <div className="bg-white p-6 rounded-xl shadow overflow-auto">
+        <h2 className="text-lg font-semibold mb-4">Top Spending Categories</h2>
+        <table className="min-w-full text-left text-sm text-gray-600">
+          <thead>
+            <tr>
+              <th className="py-2">Category</th>
+              <th className="py-2">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categoryData.map((item, i) => (
+              <tr key={i} className="border-t">
+                <td className="py-2">{item.name}</td>
+                <td className="py-2">{item.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Recent Transactions */}
+      <div className="bg-white p-6 rounded-xl shadow overflow-auto">
+        <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
+        <table className="min-w-full text-left text-sm text-gray-600">
+          <thead>
+            <tr>
+              <th className="py-2">Date</th>
+              <th className="py-2">Category</th>
+              <th className="py-2">Amount</th>
+              <th className="py-2">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((tx) => (
+              <tr key={tx.id} className="border-t">
+                <td className="py-2">{tx.date}</td>
+                <td className="py-2">{tx.category}</td>
+                <td className="py-2">₹{tx.amount}</td>
+                <td className={`py-2 ${tx.type === "Expense" ? "text-red-600" : "text-green-600"}`}>
+                  {tx.type}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

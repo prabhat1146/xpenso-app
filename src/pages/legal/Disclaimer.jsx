@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
+import { contact_us } from '../../constants';
 
 const Disclaimer = () => {
   return (
@@ -57,7 +58,7 @@ const Disclaimer = () => {
 
         <div className="mt-12 text-center">
           <p className="text-gray-500">
-            If you have any questions about this Disclaimer, please contact us at <a href="mailto:support@xpenso.com" className="text-indigo-600 underline">support@xpenso.com</a>.
+            If you have any questions about this Disclaimer, please contact us at <a href={`mailto:${contact_us}`} className="text-indigo-600 underline">{contact_us}</a>.
           </p>
         </div>
       </div>

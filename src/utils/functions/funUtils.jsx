@@ -1,4 +1,5 @@
 import React from 'react';
+import * as LucideIcons from "lucide-react";
 const formateStringView = (str) => {
     return str
       ?.split("_")
@@ -113,6 +114,12 @@ function groupByExpenseCategory(transactions) {
 }
 
 
+const LucideIcon = ({ name, ...props }) => {
+  const Icon = LucideIcons[name] || LucideIcons.HelpCircle;
+  return <Icon {...props} />;
+};
+
+
 const FunUtils = () => {
     return (
         <div>
@@ -120,5 +127,5 @@ const FunUtils = () => {
         </div>
     );
 }
-export {filterCategoryByTimeRange, groupByExpenseCategory, formateStringView,formatDateTime}
+export { LucideIcon, filterCategoryByTimeRange, groupByExpenseCategory, formateStringView,formatDateTime}
 export default FunUtils;
