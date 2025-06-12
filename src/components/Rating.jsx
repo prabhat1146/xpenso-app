@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Star, StarOff,StarHalf } from "lucide-react";
+import { Star, StarOff, StarHalf } from "lucide-react";
 import globalApi from "../utils/api/globalApi";
+import FullScreenLoader from "./FullScreenLoader";
 // import { Star, StarHalf } from "lucide-react";
-
 
 export default function Rating() {
   const [rating, setRating] = useState(0);
@@ -10,19 +10,29 @@ export default function Rating() {
   const [submitted, setSubmitted] = useState(false);
   const [submittedText, setSubmittedText] = useState(null);
   const [error, setError] = useState("");
+  const [editable, setEditable] = useState(true);
 
-  const [avgRating,setAvgRating]=useState(0);
-  const [totalRating,setTotalRating]=useState(0);
+  const [avgRating, setAvgRating] = useState(0);
+  const [totalRating, setTotalRating] = useState(0);
+
+  const [loading,setLoading]=useState(false);
 
   useEffect(() => {
     const suburl = "/api/v1/user/ratings/get-total-ratings";
     globalApi
       .get(suburl)
       .then((res) => {
-        if(res.success){
-          // console.log(res)
+        if (res.success) {
+          // console.log(res);
           setAvgRating(Number(res.data.data.averageRating));
           setTotalRating(Number(res.data.data.totalRatings));
+          const rat = Number(res.data.data.userRating.score);
+          const feed = (res.data.data.userRating.comment);
+          if (rat >= 0) {
+            setRating(rat);
+            setFeedback(feed);
+            setEditable(false);
+          }
         }
       })
       .catch((err) => {
@@ -39,6 +49,7 @@ export default function Rating() {
       setError("Please provide a comment.");
       return;
     }
+    setLoading(true);
     const suburl = "/api/v1/user/ratings/add-rating";
     const payload = {
       score: rating,
@@ -49,31 +60,42 @@ export default function Rating() {
       .post(suburl, payload)
       .then((res) => {
         if (res.success) {
+          // console.log(res.data.message)
           setSubmittedText(res.data.message);
+          setRating(0);
+          setFeedback("");
         } else {
           if (res.error === "Invalid or expired token.") {
             setError("You are not logged in.");
           } else {
             setError(res.error);
+            const err=res.error?.split(" ")[0];
+            if(err?.toLowerCase()==='duplicate'){
+              setError("You have already rated us.");
+            }
+            // console.log(err)
           }
         }
-        setRating(0)
-        setFeedback("")
+        
         setSubmitted(true);
-        console.log(res);
+        // console.log(res);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false)
       });
   };
 
   useEffect(() => {
     setError("");
+    // setSubmittedText(null)
   }, [rating, feedback]);
 
   return (
     <div className="min-h-screen bg-white px-6 pt-12 flex flex-col items-center">
       {/* App Title or Logo */}
+      {loading && <FullScreenLoader/>}
       <div className="mb-6 text-center">
         <div className="text-3xl font-extrabold text-blue-700">Xpenso</div>
         <div className="text-lg text-gray-500 mt-1">
@@ -97,8 +119,9 @@ export default function Rating() {
             key={val}
             onClick={() => setRating(val)}
             type="button"
+            disabled={!editable}
             aria-label={`Rate ${val} star${val > 1 ? "s" : ""}`}
-            className="focus:outline-none"
+            className={`focus:outline-none   ${editable?"cursor-pointer":"cursor-not-allowed"}`}
           >
             {val <= rating ? (
               <Star className="w-10 h-10 text-yellow-400 fill-yellow-400" />
@@ -110,31 +133,39 @@ export default function Rating() {
       </div>
 
       {/* Rating Summary */}
-<div className="text-center mb-6">
-  <div className="text-lg font-semibold text-gray-700 flex flex-col items-center">
-    <div className="mb-1">
-      Average Rating: <span className="text-yellow-500">{avgRating}</span>
-    </div>
-    <div className="flex gap-1 justify-center">
-      {[1, 2, 3, 4, 5].map((val) => {
-        const fullStars = Math.floor(avgRating);
-        const hasHalfStar = avgRating - fullStars >= 0.5;
-        if (val <= fullStars) {
-          return <Star key={val} className="w-6 h-6 text-yellow-400 fill-yellow-400" />;
-        } else if (val === fullStars + 1 && hasHalfStar) {
-          return <StarHalf key={val} className="w-6 h-6 text-yellow-400 fill-yellow-400" />;
-        } else {
-          return <Star key={val} className="w-6 h-6 text-gray-300" />;
-        }
-      })}
-    </div>
-  </div>
-  <div className="text-sm text-gray-500 mt-1">
-    Based on {totalRating} {totalRating === 1 ? "review" : "reviews"}
-  </div>
-</div>
-
-
+      <div className="text-center mb-6">
+        <div className="text-lg font-semibold text-gray-700 flex flex-col items-center">
+          <div className="mb-1">
+            Average Rating: <span className="text-yellow-500">{avgRating}</span>
+          </div>
+          <div className="flex gap-1 justify-center">
+            {[1, 2, 3, 4, 5].map((val) => {
+              const fullStars = Math.floor(avgRating);
+              const hasHalfStar = avgRating - fullStars >= 0.5;
+              if (val <= fullStars) {
+                return (
+                  <Star
+                    key={val}
+                    className="w-6 h-6 text-yellow-400 fill-yellow-400"
+                  />
+                );
+              } else if (val === fullStars + 1 && hasHalfStar) {
+                return (
+                  <StarHalf
+                    key={val}
+                    className="w-6 h-6 text-yellow-400 fill-yellow-400"
+                  />
+                );
+              } else {
+                return <Star key={val} className="w-6 h-6 text-gray-300" />;
+              }
+            })}
+          </div>
+        </div>
+        <div className="text-sm text-gray-500 mt-1">
+          Based on {totalRating} {totalRating === 1 ? "review" : "reviews"}
+        </div>
+      </div>
 
       {/* Feedback Input */}
       <form
@@ -149,22 +180,24 @@ export default function Rating() {
         </label>
         <textarea
           id="feedback"
-          className="bg-gray-100 rounded-xl p-4 text-base h-32 text-gray-800 mb-2 resize-none"
+          disabled={!editable}
+          className={`bg-gray-100 rounded-xl p-4 text-base h-32 text-gray-800 mb-2 resize-none ${editable?"":"cursor-not-allowed"}`}
           placeholder="Let us know what you liked or what can be improved..."
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
         />
         {error && <div className="text-red-600 mb-2 text-center">{error}</div>}
         <button
-          className="bg-blue-600 rounded-xl p-4 mt-2 text-white text-lg font-bold"
+          className={`bg-blue-600 rounded-xl p-4 mt-2 text-white text-lg font-bold ${editable?"cursor-pointer":"cursor-not-allowed bg-blue-400"}`}
           type="submit"
+          disabled={!editable}
         >
           Submit Feedback
         </button>
       </form>
 
       {/* Confirmation */}
-      {submitted && (
+      {submittedText && (
         <div className="mt-6 text-green-600 text-center text-base">
           🎉 {submittedText}
         </div>
