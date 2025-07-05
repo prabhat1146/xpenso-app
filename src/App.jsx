@@ -20,6 +20,7 @@ import PrivacyPolicy from "./pages/legal/PrivacyPolicy ";
 import TermsAndConditions from "./pages/legal/TermsAndConditions";
 import RefundPolicy from "./pages/legal/RefundPolicy";
 import Disclaimer from "./pages/legal/Disclaimer";
+import VerifyOTP from "./auth/firebase/OTPLogin";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             </Route>
             <Route path="login" element={<Login />} />
             <Route path="sign-up" element={<Signup />} />
+            <Route path="verify-mobile-otp" element={<VerifyOTP />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
           </Route>
           <Route path="legal" element={<Outlet />}>
