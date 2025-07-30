@@ -14,7 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-console.log(auth)
+// console.log(auth)
 
 // auth.settings.appVerificationDisabledForTesting = true;
 
