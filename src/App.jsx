@@ -21,6 +21,7 @@ import TermsAndConditions from "./pages/legal/TermsAndConditions";
 import RefundPolicy from "./pages/legal/RefundPolicy";
 import Disclaimer from "./pages/legal/Disclaimer";
 import VerifyOTP from "./auth/firebase/OTPLogin";
+import VerifyEmail from "./components/verifications/VerifyEmail";
 
 function App() {
   return (
@@ -48,11 +49,17 @@ function App() {
           <Route path="legal" element={<Outlet />}>
             <Route path="about-us" element={<AboutUs />} />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+            <Route
+              path="terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
             <Route path="refund-policy" element={<RefundPolicy />} />
             <Route path="disclaimer" element={<Disclaimer />} />
           </Route>
           <Route path="contact-us" element={<Contact />} />
+          <Route path="verifications" element={<Outlet />}>
+            <Route path="verify-email" element={<VerifyEmail />} />
+          </Route>
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Route>

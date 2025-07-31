@@ -150,6 +150,16 @@ const Signup = () => {
         return setError("Kindly verify atleast one")
       }
 
+      setFormData({
+        mobile:"",
+        email:"",
+        countryCode: "+91",
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        password: "",
+
+      });
       setShowOTP(false);
       setSuccess("SignUp successfull. \nKindly login now.");
     } catch (err) {
@@ -207,14 +217,7 @@ const Signup = () => {
       await apiClientJson.post("/api/v1/auth/sign-up", payload);
 
       setSuccess("OTP sent to both mobile and email.");
-      setFormData({
-        ...formData,
-        countryCode: "+91",
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        password: "",
-      });
+      
       setMobileOtp("");
       setEmailOtp("");
       setShowOTP(true);
@@ -376,14 +379,14 @@ const Signup = () => {
             {showOTP ? "Complete Signup" : "Send OTPs"}
           </button>
 
-          <div className="text-white text-center">
-            <Link to="/pages/user/login" className="underline text-cyan-300">
+          <div className="text-white text-center grid grid-cols-1">
+            <Link to="/pages/user/login" className=" text-cyan-300">
               Already have an account? Login
             </Link>
-            <Link to="/pages/verification/email" className="underline text-cyan-300">
+            <Link to="/pages/verifications/verify-email" className=" text-cyan-300">
               Verify Eamil
             </Link>
-            <Link to="/pages/verification/mobile" className="underline text-cyan-300">
+            <Link to="/pages/verifications/verify-mobile" className=" text-cyan-300">
               Verify Mobile
             </Link>
           </div>
