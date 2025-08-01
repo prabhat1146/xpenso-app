@@ -46,7 +46,7 @@ const Login = () => {
             password: formData.password,
           };
 
-          console.log(payload)
+          // console.log(payload)
 
       const { data } = await apiClientJson.post("/api/v1/auth/login", payload);
 
