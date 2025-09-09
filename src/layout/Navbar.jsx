@@ -37,7 +37,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transform transition-transform duration-300 z-40 ${
+      className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white transform transition-transform duration-300 z-40 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -65,7 +65,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 };
 
 const Navbar = ({ toggleSidebar, isLoggedIn, onLogin, onLogout }) => (
-  <div className="bg-gray-800 text-white px-4 py-3 flex justify-between items-center">
+  <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white px-4 py-3 flex justify-between items-center">
     <div className="flex items-center gap-3">
       <button onClick={toggleSidebar} aria-label="Toggle Sidebar">
         <Menu />

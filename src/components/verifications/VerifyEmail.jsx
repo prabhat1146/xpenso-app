@@ -38,7 +38,7 @@ const VerifyEmail = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-100 via-white to-gray-200 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4">
       <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">Verify Email</h2>
 

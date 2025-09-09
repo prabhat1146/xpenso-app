@@ -239,10 +239,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-50 to-cyan-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4">
       {loading && <FullScreenLoader />}
       <div
-        className={`max-w-full w-full md:w-3/4 lg:w-1/2 bg-slate-800 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
+        className={`max-w-full w-full md:w-3/4 lg:w-1/2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
         ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
         <h2 className="text-4xl font-bold text-cyan-400 mb-8 text-center">Sign Up</h2>
@@ -264,23 +264,23 @@ const Signup = () => {
               name="countryCode"
               value={formData.countryCode}
               onChange={handleChange}
-              className="rounded-md bg-slate-700 border border-slate-600 px-3 py-3 text-slate-200 w-full md:w-3/4"
+              className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200 md:w-3/4"
               required
             >
               {countryCodes.map(({ code, label }) => (
-                <option key={code} value={code}>
+                <option key={code} value={code} className="bg-indigo-600">
                   {label} ({code})
                 </option>
               ))}
             </select>
 
             <input
-              type="text"
+              type="number"
               name="mobile"
               placeholder="Mobile Number"
               value={formData.mobile}
               onChange={handleChange}
-              className="rounded-md bg-slate-700 border border-slate-600 px-5 py-3 text-slate-200 w-full"
+              className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
               required
             />
           </div>
@@ -291,7 +291,7 @@ const Signup = () => {
             placeholder="First Name"
             value={formData.firstName}
             onChange={handleChange}
-            className="w-full rounded-md bg-slate-700 border px-5 py-3 text-slate-200"
+            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
             required
           />
           <input
@@ -300,7 +300,7 @@ const Signup = () => {
             placeholder="Middle Name (optional)"
             value={formData.middleName}
             onChange={handleChange}
-            className="w-full rounded-md bg-slate-700 border px-5 py-3 text-slate-200"
+            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
           />
           <input
             type="text"
@@ -308,7 +308,7 @@ const Signup = () => {
             placeholder="Last Name"
             value={formData.lastName}
             onChange={handleChange}
-            className="w-full rounded-md bg-slate-700 border px-5 py-3 text-slate-200"
+            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
             required
           />
           <input
@@ -317,7 +317,7 @@ const Signup = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-md bg-slate-700 border px-5 py-3 text-slate-200"
+            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
             required
           />
           <input
@@ -326,7 +326,7 @@ const Signup = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full rounded-md bg-slate-700 border px-5 py-3 text-slate-200"
+            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
             required
           />
 
@@ -380,13 +380,13 @@ const Signup = () => {
           </button>
 
           <div className="text-white text-center grid grid-cols-1">
-            <Link to="/pages/user/login" className=" text-cyan-300">
+            <Link to="/pages/user/login" className=" text-white">
               Already have an account? Login
             </Link>
-            <Link to="/pages/verifications/verify-email" className=" text-cyan-300">
+            <Link to="/pages/verifications/verify-email" className=" text-white">
               Verify Eamil
             </Link>
-            <Link to="/pages/verifications/verify-mobile" className=" text-cyan-300">
+            <Link to="/pages/verifications/verify-mobile" className=" text-white">
               Verify Mobile
             </Link>
           </div>

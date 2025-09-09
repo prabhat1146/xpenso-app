@@ -4,10 +4,10 @@ import { AlertCircle } from "lucide-react";
 
 const ErrorPage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-      <AlertCircle className="text-red-600" size={64} />
-      <h1 className="text-4xl font-bold mt-4 mb-2 text-gray-800">Oops!</h1>
-      <p className="text-gray-600 mb-6 text-center max-w-md">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
+      <AlertCircle className="text-white" size={64} />
+      <h1 className="text-4xl font-bold mt-4 mb-2 text-white">Oops!</h1>
+      <p className="text-white mb-6 text-center max-w-md">
         The page you're looking for doesn't exist or something went wrong.
       </p>
       <Link

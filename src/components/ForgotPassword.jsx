@@ -33,7 +33,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-50 to-cyan-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4">
       <div className="max-w-md w-full bg-slate-800 shadow-lg rounded-lg p-10">
         <h2 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
           Forgot Password

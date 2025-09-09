@@ -1,234 +1,109 @@
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  AreaChart,
-  Area,
-  Legend,
-  CartesianGrid,
-  LineChart,
-  Line,
-} from "recharts";
-
-const expenseData = [
-  { month: "Jan", expense: 1200 },
-  { month: "Feb", expense: 980 },
-  { month: "Mar", expense: 1450 },
-  { month: "Apr", expense: 1100 },
-  { month: "May", expense: 1650 },
-  { month: "Jun", expense: 1300 },
-];
-
-const categoryData = [
-  { name: "Food", value: 450 },
-  { name: "Travel", value: 300 },
-  { name: "Shopping", value: 200 },
-  { name: "Utilities", value: 350 },
-  { name: "Other", value: 400 },
-];
-
-const incomeExpenseData = [
-  { month: "Jan", income: 2000, expense: 1200 },
-  { month: "Feb", income: 2100, expense: 980 },
-  { month: "Mar", income: 2200, expense: 1450 },
-  { month: "Apr", income: 2000, expense: 1100 },
-  { month: "May", income: 2500, expense: 1650 },
-  { month: "Jun", income: 2300, expense: 1300 },
-];
-
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F"];
-
-const transactions = [
-  { id: 1, date: "2025-06-01", category: "Food", amount: 150, type: "Expense" },
-  { id: 2, date: "2025-06-02", category: "Salary", amount: 2000, type: "Income" },
-  { id: 3, date: "2025-06-03", category: "Travel", amount: 300, type: "Expense" },
-  { id: 4, date: "2025-06-04", category: "Freelance", amount: 500, type: "Income" },
-];
+import { PiggyBank, ShieldCheck, BarChart3, Smartphone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  const totalIncome = incomeExpenseData.reduce((acc, cur) => acc + cur.income, 0);
-  const totalExpense = incomeExpenseData.reduce((acc, cur) => acc + cur.expense, 0);
-  const savings = totalIncome - totalExpense;
-
-  const balanceData = incomeExpenseData.map((item) => ({
-    month: item.month,
-    balance: item.income - item.expense,
-  }));
-
-  const savingsTrendData = incomeExpenseData.map((item, index) => {
-    const previous = index === 0 ? 0 : incomeExpenseData[index - 1].income - incomeExpenseData[index - 1].expense;
-    return {
-      month: item.month,
-      savings: item.income - item.expense + previous,
-    };
-  });
-
   return (
-    <div className="p-6 space-y-10">
-      {/* <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1> */}
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-green-100 p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold text-green-800">Total Income</h2>
-          <p className="text-2xl mt-2 font-bold text-green-900">₹{totalIncome}</p>
+    <div className="min-h-screen bg-gray-50 text-gray-800">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-20 px-6 text-center rounded-b-3xl shadow-lg">
+        <h1 className="text-4xl sm:text-5xl font-bold">Xpenso – Smart Expense Manager</h1>
+        <p className="mt-4 text-lg text-indigo-100 max-w-2xl mx-auto">
+          Track your money effortlessly, stay in control, and grow your savings with 
+          a clean and modern finance companion.
+        </p>
+        <div className="mt-6 flex justify-center gap-4">
+          <Link to={'/pages/user/login'} className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-xl shadow hover:bg-indigo-100 transition">
+            Get Started
+          </Link>
+          {/* <button className="bg-transparent border border-white px-6 py-3 rounded-xl hover:bg-white hover:text-indigo-600 transition">
+            Learn More
+          </button> */}
         </div>
-        <div className="bg-red-100 p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold text-red-800">Total Expense</h2>
-          <p className="text-2xl mt-2 font-bold text-red-900">₹{totalExpense}</p>
-        </div>
-        <div className="bg-blue-100 p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold text-blue-800">Net Savings</h2>
-          <p className="text-2xl mt-2 font-bold text-blue-900">₹{savings}</p>
-        </div>
-      </div>
+      </section>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Monthly Expenses */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-4">Monthly Expenses</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={expenseData}>
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="expense" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      <main className="p-8 space-y-20">
+        {/* About Section */}
+        <section className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800">About Xpenso</h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Xpenso is your all-in-one personal finance tracker designed to simplify money 
+            management. From daily expenses to long-term savings goals, Xpenso helps you 
+            build better financial habits with ease.
+          </p>
+        </section>
 
-        {/* Spending by Category */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-4">Spending by Category</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={categoryData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-                label
-              >
-                {categoryData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+        {/* Why Xpenso Section */}
+        <section className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-800">Why Choose Xpenso?</h2>
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+              <PiggyBank className="mx-auto text-indigo-500" size={48} />
+              <h3 className="mt-4 font-semibold text-lg">Smart Savings</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Automatically track your spending and see how much you save each month.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+              <ShieldCheck className="mx-auto text-green-500" size={48} />
+              <h3 className="mt-4 font-semibold text-lg">Secure & Private</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Your data is encrypted and stored safely, ensuring privacy and protection.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+              <BarChart3 className="mx-auto text-pink-500" size={48} />
+              <h3 className="mt-4 font-semibold text-lg">Visual Insights</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Get clear insights into your finances with easy-to-read charts and stats.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+              <Smartphone className="mx-auto text-yellow-500" size={48} />
+              <h3 className="mt-4 font-semibold text-lg">Anytime, Anywhere</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Manage your finances on the go with a mobile-first design.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      {/* Income vs Expense */}
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h2 className="text-lg font-semibold mb-4">Income vs Expense</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={incomeExpenseData}>
-            <defs>
-              <linearGradient id="income" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#00C49F" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#00C49F" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="expense" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#FF8042" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#FF8042" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="month" />
-            <YAxis />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-            <Legend />
-            <Area type="monotone" dataKey="income" stroke="#00C49F" fill="url(#income)" />
-            <Area type="monotone" dataKey="expense" stroke="#FF8042" fill="url(#expense)" />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
+        {/* How We Maintain Section */}
+        <section className="bg-white rounded-2xl shadow-md p-8 max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-800">How We Maintain It</h2>
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="p-4">
+              <h3 className="font-semibold text-lg">Regular Updates</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Xpenso is continuously improved with new features and security patches.
+              </p>
+            </div>
+            <div className="p-4">
+              <h3 className="font-semibold text-lg">Data Security</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                We maintain strict compliance to keep your financial data safe.
+              </p>
+            </div>
+            <div className="p-4">
+              <h3 className="font-semibold text-lg">Customer Support</h3>
+              <p className="mt-2 text-gray-600 text-sm">
+                Our support team is here to help you with any issues 24/7.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      {/* Monthly Balance Chart */}
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h2 className="text-lg font-semibold mb-4">Monthly Balance</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={balanceData}>
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="balance" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Savings Trend Line Chart */}
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h2 className="text-lg font-semibold mb-4">Savings Trend</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={savingsTrendData}>
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="savings" stroke="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Top Categories Table */}
-      <div className="bg-white p-6 rounded-xl shadow overflow-auto">
-        <h2 className="text-lg font-semibold mb-4">Top Spending Categories</h2>
-        <table className="min-w-full text-left text-sm text-gray-600">
-          <thead>
-            <tr>
-              <th className="py-2">Category</th>
-              <th className="py-2">Amount (₹)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categoryData.map((item, i) => (
-              <tr key={i} className="border-t">
-                <td className="py-2">{item.name}</td>
-                <td className="py-2">{item.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Recent Transactions */}
-      <div className="bg-white p-6 rounded-xl shadow overflow-auto">
-        <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
-        <table className="min-w-full text-left text-sm text-gray-600">
-          <thead>
-            <tr>
-              <th className="py-2">Date</th>
-              <th className="py-2">Category</th>
-              <th className="py-2">Amount</th>
-              <th className="py-2">Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((tx) => (
-              <tr key={tx.id} className="border-t">
-                <td className="py-2">{tx.date}</td>
-                <td className="py-2">{tx.category}</td>
-                <td className="py-2">₹{tx.amount}</td>
-                <td className={`py-2 ${tx.type === "Expense" ? "text-red-600" : "text-green-600"}`}>
-                  {tx.type}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        {/* Call to Action */}
+        <section className="text-center">
+          <h2 className="text-3xl font-bold text-gray-800">Take Control of Your Finances Today</h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Start using Xpenso and experience stress-free money management.
+          </p>
+          <button className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl shadow transition text-lg font-semibold">
+            Get Started for Free
+          </button>
+        </section>
+      </main>
     </div>
   );
 };

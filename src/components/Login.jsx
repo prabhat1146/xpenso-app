@@ -69,13 +69,13 @@ const Login = () => {
   const showCountryCode = !isLikelyEmail(formData.identifier);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-50 to-cyan-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4">
       {loading && <FullScreenLoader />}
       <div
-        className={`max-w-md w-full bg-slate-800 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
+        className={`max-w-md w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
         ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
-        <h2 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
+        <h2 className="text-4xl font-bold text-white mb-8 text-center">
           Login
         </h2>
 
@@ -108,7 +108,7 @@ const Login = () => {
               onChange={handleChange}
               className={`${
                 showCountryCode ? "w-2/3" : "w-full"
-              } rounded-md bg-slate-700 border border-slate-600 px-5 py-3 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200`}
+              } rounded-md  border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200`}
               required
             />
           </div>
@@ -119,7 +119,7 @@ const Login = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full rounded-md bg-slate-700 border border-slate-600 px-5 py-3 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
+            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
             required
           />
 
