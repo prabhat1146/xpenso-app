@@ -22,6 +22,9 @@ import RefundPolicy from "./pages/legal/RefundPolicy";
 import Disclaimer from "./pages/legal/Disclaimer";
 import VerifyOTP from "./auth/firebase/OTPLogin";
 import VerifyEmail from "./components/verifications/VerifyEmail";
+import BorrowingAndLendingList from "./pages/user/borrowers-lenders-transactions/BorrowingAndLendingList";
+import BorrowerLenderHistory from "./pages/user/borrowers-lenders-transactions/EachBorrowerLenderHistory";
+import AddNewBorrowerLender from "./pages/user/borrowers-lenders-transactions/AddNewBorrowerLender";
 
 function App() {
   return (
@@ -39,6 +42,9 @@ function App() {
                 <Route path="profile" element={<Profile />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="rating" element={<Rating />} />
+                <Route path="borrowing-and-lending-list" element={<BorrowingAndLendingList />} />
+                <Route path="borrowing-lending-history" element={<BorrowerLenderHistory />} />
+                <Route path="add-new-borrower-lender" element={<AddNewBorrowerLender />} />
               </Route>
             </Route>
             <Route path="login" element={<Login />} />

@@ -340,7 +340,7 @@ const Signup = () => {
                   value={mobileOtp}
                   onChange={(e) => setMobileOtp(e.target.value)}
                   className="flex-1 rounded-md bg-slate-700 border border-slate-600 px-5 py-3 text-slate-200"
-                  required
+                  
                 />
                 <button
                   type="button"
@@ -359,7 +359,7 @@ const Signup = () => {
                   value={emailOtp}
                   onChange={(e) => setEmailOtp(e.target.value)}
                   className="flex-1 rounded-md bg-slate-700 border border-slate-600 px-5 py-3 text-slate-200"
-                  required
+                  
                 />
                 <button
                   type="button"

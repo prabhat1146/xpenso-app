@@ -13,6 +13,8 @@ import {
   LogIn,
   LogOut,
   LayoutDashboardIcon,
+  Banknote,
+  HandCoins
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -25,6 +27,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { name: "Expense", icon: <Wallet size={18} />, to: "/pages/user/in/expense" },
     { name: "Add New", icon: <PlusCircle size={18} />, to: "/pages/user/in/add-new" },
     { name: "Analysis", icon: <BarChart size={18} />, to: "/pages/user/in/expense-analysis" },
+    { name: "Borrowing/Lending", icon: <Banknote size={18} />, to: "/pages/user/in/borrowing-and-lending-list" },
+    // { name: "Lending", icon: <HandCoins size={18} />, to: "/pages/user/in/borrowing" },
     { name: "Profile", icon: <User size={18} />, to: "/pages/user/in/profile" },
     { name: "Settings", icon: <Settings size={18} />, to: "/pages/user/in/settings" },
     { name: "Contact", icon: <Phone size={18} />, to: "/pages/contact-us" },
