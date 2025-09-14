@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, User, Mail, Phone } from "lucide-react";
 import apiClientJson from "../utils/api/apiClientJson";
 import { useAuth } from "../context/AuthContext";
 import FullScreenLoader from "./FullScreenLoader";
@@ -12,7 +13,7 @@ const Login = () => {
     identifier: "", // mobile or email
     password: "",
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
@@ -46,8 +47,6 @@ const Login = () => {
             password: formData.password,
           };
 
-          // console.log(payload)
-
       const { data } = await apiClientJson.post("/api/v1/auth/login", payload);
 
       login(
@@ -72,7 +71,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-4">
       {loading && <FullScreenLoader />}
       <div
-        className={`max-w-md w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
+        className={`max-w-md w-full  shadow-lg rounded-lg p-10 transform transition-opacity transition-transform duration-700 ease-out
         ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
         <h2 className="text-4xl font-bold text-white mb-8 text-center">
@@ -86,7 +85,7 @@ const Login = () => {
         )}
 
         <form onSubmit={handleLogin} className="space-y-6">
-          <div className="flex gap-2">
+          <div className="flex gap-2 relative">
             {showCountryCode && (
               <select
                 name="countryCode"
@@ -100,28 +99,51 @@ const Login = () => {
                 <option value="+61">🇦🇺 +61</option>
               </select>
             )}
-            <input
-              type="text"
-              name="identifier"
-              placeholder="Mobile Number or Email"
-              value={formData.identifier}
-              onChange={handleChange}
-              className={`${
-                showCountryCode ? "w-2/3" : "w-full"
-              } rounded-md  border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200`}
-              required
-            />
+
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-3 text-slate-400">
+                {isLikelyEmail(formData.identifier) ? (
+                  <Mail size={20} />
+                ) : (
+                  <Phone size={20} />
+                )}
+              </span>
+
+              <input
+                type="text"
+                name="identifier"
+                placeholder="Mobile Number or Email"
+                value={formData.identifier}
+                onChange={handleChange}
+                className={`${
+                  showCountryCode ? "w-full pl-10" : "w-full pl-10"
+                } rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200`}
+                required
+              />
+            </div>
           </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-5 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
-            required
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-3 text-slate-400">
+              <User size={20} />
+            </span>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full rounded-md border bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 border-indigo-600 px-10 py-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:scale-[1.02] transition-transform duration-200"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3 text-slate-400 hover:text-white"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           <button
             type="submit"

@@ -38,7 +38,7 @@ export default function Rating() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [submitted]);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (rating === 0) {

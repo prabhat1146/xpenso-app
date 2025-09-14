@@ -15,7 +15,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-gray-300 py-8 px-6">
+    <footer className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-gray-300 py-8 px-6 border border-white">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Brand / About */}
         <div>
@@ -71,7 +71,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-700 mt-6 pt-4 text-center text-sm text-gray-400">
+      <div className=" border-gray-700 mt-6 pt-4 text-center text-sm text-white">
         © {currentYear} Xpenso. All rights reserved.
       </div>
     </footer>

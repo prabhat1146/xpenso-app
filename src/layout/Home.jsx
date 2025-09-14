@@ -96,12 +96,12 @@ const Home = () => {
         {/* Call to Action */}
         <section className="text-center">
           <h2 className="text-3xl font-bold text-gray-800">Take Control of Your Finances Today</h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <p className="my-4 text-lg text-gray-600">
             Start using Xpenso and experience stress-free money management.
           </p>
-          <button className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl shadow transition text-lg font-semibold">
+          <Link to={'/pages/user/login'} className="my-10 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl shadow transition text-lg font-semibold">
             Get Started for Free
-          </button>
+          </Link>
         </section>
       </main>
     </div>

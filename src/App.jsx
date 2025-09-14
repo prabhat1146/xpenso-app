@@ -25,6 +25,7 @@ import VerifyEmail from "./components/verifications/VerifyEmail";
 import BorrowingAndLendingList from "./pages/user/borrowers-lenders-transactions/BorrowingAndLendingList";
 import BorrowerLenderHistory from "./pages/user/borrowers-lenders-transactions/EachBorrowerLenderHistory";
 import AddNewBorrowerLender from "./pages/user/borrowers-lenders-transactions/AddNewBorrowerLender";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="sign-up" element={<Signup />} />
             <Route path="verify-mobile-otp" element={<VerifyOTP />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
           </Route>
           <Route path="legal" element={<Outlet />}>
             <Route path="about-us" element={<AboutUs />} />
