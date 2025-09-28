@@ -67,13 +67,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 const Navbar = ({ toggleSidebar, isLoggedIn, onLogin, onLogout }) => (
   <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white px-4 py-3 flex justify-between items-center">
     <div className="flex items-center gap-3">
+      <div>
+        <img className="w-16 h-16 " src="/assets/logo/logo-2-small-preview.png" alt="" />
+      </div>
       <button onClick={toggleSidebar} aria-label="Toggle Sidebar">
         <Menu />
       </button>
-      <div>
-        <img className="w-12 h-12 rounded-full" src="/assets/logo/XPENSO.png" alt="" />
-      </div>
-      <span className="text-xl font-bold">Xpenso</span>
+      
+      {/* <span className="text-xl font-bold">Xpenso</span> */}
     </div>
     <div>
       {isLoggedIn ? (

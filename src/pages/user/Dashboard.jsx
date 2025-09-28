@@ -4,6 +4,7 @@ import FullScreenLoader from "../../components/FullScreenLoader";
 import UseGetTransactions from "../../hooks/useGetTransactions";
 import { formateStringView } from "../../utils/functions/funUtils";
 import BarCharts from "../../components/charts/BarCharts";
+import { Helmet } from "react-helmet";
 
 const Dashboard = () => {
   const {
@@ -29,6 +30,13 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-6">
+      <Helmet>
+        <title>Dashboard - Xpenso</title>
+        <meta name="description" content="Track and manage your expenses with Xpenso Dashboard." />
+        <meta property="og:title" content="Dashboard - Xpenso" />
+        <meta property="og:description" content="Track and manage your expenses with Xpenso Dashboard." />
+        <meta property="og:url" content="https://xpenso.mithilax.in/pages/user/in/dashboard" />
+      </Helmet>
       <h1 className="text-3xl font-bold text-slate-800 mb-8">
         Welcome back 👋
       </h1>

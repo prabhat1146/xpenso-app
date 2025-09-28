@@ -31,8 +31,8 @@ const Footer = () => {
           <div>
             <h3 className="text-white text-md font-semibold mb-2">Quick Links</h3>
           <ul className="text-sm space-y-2">
-            <li><a href="https://mithilax.vercel.app/" className="hover:text-white">MithilaX</a></li>
-            <li><a href="https://mithila-vibes-klbd.vercel.app/" className="hover:text-white">Mithila-vibes</a></li>
+            <li><a href="https://mithilax.in/" className="hover:text-white">MithilaX</a></li>
+            <li><a href="https://mithila-vibes.mithilax.in/" className="hover:text-white">Mithila-vibes</a></li>
            
           </ul>
           </div>
