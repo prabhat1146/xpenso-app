@@ -17,12 +17,12 @@ const VerifyEmail = () => {
       setLoading(true);
       const subUrl="/api/v1/email/send-email-otp"
       const res=await globalApi.post(subUrl, { email });
-      console.log(res)
+      // console.log(res)
       setOtpSent(true);
-      setMessage({ type: "success", text: "OTP sent to your email." });
+      setMessage({ type: "success", text: res?.data?.message || "OTP sent to your email." });
     } catch (err) {
       console.log(err)
-      setMessage({ type: "error", text: err.response?.data?.message || "Failed to send OTP." });
+      setMessage({ type: "error", text: err?.message || err.response?.data?.message || "Failed to send OTP." });
     } finally {
       setLoading(false);
     }
