@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Mail, KeyRound } from "lucide-react";
 import apiClientJson from "../../utils/api/apiClientJson";
+import globalApi from "../../utils/api/globalApi";
 
 
 const VerifyEmail = () => {
@@ -14,10 +15,13 @@ const VerifyEmail = () => {
     setMessage({ type: "", text: "" });
     try {
       setLoading(true);
-      await apiClientJson.post("/api/v1/email/send-email-otp", { email });
+      const subUrl="/api/v1/email/send-email-otp"
+      const res=await globalApi.post(subUrl, { email });
+      console.log(res)
       setOtpSent(true);
       setMessage({ type: "success", text: "OTP sent to your email." });
     } catch (err) {
+      console.log(err)
       setMessage({ type: "error", text: err.response?.data?.message || "Failed to send OTP." });
     } finally {
       setLoading(false);
@@ -28,7 +32,7 @@ const VerifyEmail = () => {
     setMessage({ type: "", text: "" });
     try {
       setLoading(true);
-      await apiClientJson.post("/api/v1/email/verify-email-otp", { email,  otp });
+      await globalApi.post("/api/v1/email/verify-email-otp", { email,  otp });
       setMessage({ type: "success", text: "Email verified successfully!" });
     } catch (err) {
       setMessage({ type: "error", text: err.response?.data?.message || "OTP verification failed." });
