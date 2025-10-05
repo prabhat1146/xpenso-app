@@ -1,19 +1,5 @@
 import React from "react";
 import { ArrowDownCircle, ArrowUpCircle, Wallet } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
 import UseGetTransactionsData from "../../hooks/useGetTransactionsData";
 import FullScreenLoader from "../../components/FullScreenLoader";
 import BarCharts from "../../components/charts/BarCharts";
@@ -25,26 +11,10 @@ import {
 } from "../../utils/functions/funUtils";
 import UseGetTransactions from "../../hooks/useGetTransactions";
 
-const monthlyData = [
-  { month: "Jan", income: 4000, expense: 2500 },
-  { month: "Feb", income: 4200, expense: 3000 },
-  { month: "Mar", income: 3500, expense: 2800 },
-  { month: "Apr", income: 5000, expense: 3200 },
-  { month: "May", income: 4800, expense: 3300 },
-  { month: "Jun", income: 5200, expense: 3100 },
-];
 
-const categoryExpenseData = [
-  { name: "Food & Groceries", value: 4000, color: "#f87171" },
-  { name: "Rent", value: 2500, color: "#60a5fa" },
-  { name: "Utilities", value: 1500, color: "#34d399" },
-  { name: "Transportation", value: 1200, color: "#fbbf24" },
-  { name: "Entertainment", value: 800, color: "#a78bfa" },
-];
 
 // const incomeData = monthlyData.map((item) => item.income);
 // const expenseData = monthlyData.map((item) => item.expense);
-const balanceData = monthlyData.map((item) => item.income - item.expense);
 // const totalIncome = incomeData.reduce((a, b) => a + b, 0);
 // const totalExpense = expenseData.reduce((a, b) => a + b, 0);
 // const totalBalance = totalIncome - totalExpense;
